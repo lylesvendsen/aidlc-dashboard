@@ -134,7 +134,7 @@ export default function SpecAssistantPage() {
   if (!project) return <p className="text-gray-400 p-8">Loading...</p>
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)]">
+    <div className="flex flex-col h-[calc(100vh-140px)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-4 shrink-0">
         <div className="flex items-center gap-3">

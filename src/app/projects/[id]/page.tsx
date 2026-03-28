@@ -141,7 +141,10 @@ export default function ProjectPage() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Specs</h2>
-          <Link href={"/projects/" + id + "/specs/new"} className="btn-secondary text-sm">
+          <Link href={"/projects/" + id + "/spec-assistant"} className="btn-ghost text-sm whitespace-nowrap">
+            Spec Assistant
+          </Link>
+          <Link href={"/projects/" + id + "/specs/new"} className="btn-secondary text-sm whitespace-nowrap">
             New Spec
           </Link>
         </div>
@@ -165,6 +168,17 @@ export default function ProjectPage() {
                       <span className={lastLog.status === "passed" ? "badge-pass" : "badge-fail"}>
                         {lastLog.status}
                       </span>
+                    )}
+                    {spec.jiraTicketId && (
+                      <a
+                        href={spec.jiraUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={e => e.stopPropagation()}
+                        className="text-xs font-mono bg-blue-50 text-blue-700 border border-blue-200 rounded px-1.5 py-0.5 hover:bg-blue-100 whitespace-nowrap"
+                      >
+                        {spec.jiraTicketId}
+                      </a>
                     )}
                   </div>
                   <p className="text-gray-500 text-xs mt-0.5 truncate">

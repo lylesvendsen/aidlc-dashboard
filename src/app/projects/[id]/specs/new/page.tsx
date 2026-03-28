@@ -7,6 +7,7 @@ const SPEC_TEMPLATE = `# {ID} - {Title}
 # Version: 1.0
 # Part of: {Project} AIDLC
 # Updated: ${new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+# Jira: https://jira.tools.bestbuy.com/browse/{TICKET-ID}    (optional — delete if not applicable)
 
 ## What this unit delivers
 [One clear paragraph. What exists after this unit that did not exist before.]
