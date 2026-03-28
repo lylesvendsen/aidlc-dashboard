@@ -33,6 +33,20 @@ export function parseSpec(filePath: string): SpecFile {
   const versionLine = lines.find(l => l.match(/^#\s*Version:/))
   const version     = versionLine?.match(/Version:\s*(.+)/)?.[1]?.trim() ?? "1.0"
 
+  const jiraLine = lines.find(l => l.match(/^#\s*Jira:\s*\S+/))
+  let jiraUrl: string | undefined = undefined
+  let jiraTicketId: string | undefined = undefined
+  if (jiraLine) {
+    const jiraMatch = jiraLine.match(/^#\s*Jira:\s*(\S+)/)
+    if (jiraMatch?.[1]) {
+      jiraUrl = jiraMatch[1]
+      const ticketMatch = jiraUrl.match(/browse\/([A-Z]+-\d+)/)
+      if (ticketMatch?.[1]) {
+        jiraTicketId = ticketMatch[1]
+      }
+    }
+  }
+
   const deliversIdx = lines.findIndex(l => l.includes("What this unit delivers"))
   let summary = ""
   if (deliversIdx >= 0) {
@@ -66,5 +80,7 @@ export function parseSpec(filePath: string): SpecFile {
     filePath,
     rawContent: raw,
     subPrompts,
+    jiraUrl,
+    jiraTicketId,
   }
 }

@@ -1,0 +1,30 @@
+{
+  "id": "B4-2026-03-28T21-24-17",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B4",
+  "unitTitle": "Jira Support and Methodology Integration",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B4-jira-support-and-methodology-integration.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T21:24:17.404Z",
+  "status": "failed",
+  "durationMs": 36813,
+  "subPrompts": [
+    {
+      "id": "SP-02",
+      "name": "Jira badge on spec card and commit message prefix",
+      "status": "failed",
+      "durationMs": 36813,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [],
+      "error": "EROFS: read-only file system, open '/page.tsx'"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "df1177f435bdd85f93912412562f1f7e20915e09",
+  "error": "Failed at SP-02: EROFS: read-only file system, open '/page.tsx'"
+}

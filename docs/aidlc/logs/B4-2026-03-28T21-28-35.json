@@ -1,0 +1,75 @@
+{
+  "id": "B4-2026-03-28T21-28-35",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B4",
+  "unitTitle": "Jira Support and Methodology Integration",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B4-jira-support-and-methodology-integration.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T21:28:35.820Z",
+  "status": "passed",
+  "durationMs": 128731,
+  "subPrompts": [
+    {
+      "id": "SP-02",
+      "name": "Jira badge on spec card and commit message prefix",
+      "status": "passed",
+      "durationMs": 53571,
+      "tokens": {
+        "input": 4628,
+        "output": 4879
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-03",
+      "name": "Wire AIDLC-METHODOLOGY.md into Spec Assistant",
+      "status": "passed",
+      "durationMs": 30318,
+      "tokens": {
+        "input": 4577,
+        "output": 2368
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-04",
+      "name": "Fix Spec Assistant bugs",
+      "status": "passed",
+      "durationMs": 44840,
+      "tokens": {
+        "input": 4640,
+        "output": 3734
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "df1177f435bdd85f93912412562f1f7e20915e09"
+}

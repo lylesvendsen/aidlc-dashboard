@@ -251,11 +251,16 @@ function getMaxTokens(project: Project): number {
 
 function extractFilePaths(spBody: string): string[] {
   const paths = new Set<string>()
-  const pattern = /([a-zA-Z0-9_./-]+.[a-zA-Z]{1,5})/g
-  const matches = spBody.match(pattern) ?? []
-  for (const match of matches) {
-    if (match.includes("/") && !match.startsWith("http") && !match.startsWith("@") && !match.includes("..") && match.split(".").length >= 2) {
-      paths.add(match)
+  // Match file paths that have at least one directory component
+  // e.g. src/lib/foo.ts YES, page.tsx NO
+  const lines = spBody.split("\n")
+  for (const line of lines) {
+    const trimmed = line.trim()
+    // Look for lines that are purely a file path (indented path lines in specs)
+    // Must start with a known directory prefix
+    const pathMatch = trimmed.match(/^(src|apps|packages|functions|docs|tests?|components?)[\/][a-zA-Z0-9_.\[\]/-]+\.[a-zA-Z]{1,5}$/)
+    if (pathMatch) {
+      paths.add(trimmed)
     }
   }
   return Array.from(paths)

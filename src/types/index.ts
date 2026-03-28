@@ -31,16 +31,18 @@ export interface SubPromptDef {
 }
 
 export interface SpecFile {
-  id:          string
-  filename:    string
-  title:       string
-  summary:     string
-  version:     string
-  filePath:    string
-  subPrompts:  SubPromptDef[]
-  rawContent:  string
-  lastRunAt?:  string
-  lastStatus?: "passed" | "failed"
+  id:             string
+  filename:       string
+  title:          string
+  summary:        string
+  version:        string
+  filePath:       string
+  subPrompts:     SubPromptDef[]
+  rawContent:     string
+  lastRunAt?:     string
+  lastStatus?:    "passed" | "failed"
+  jiraUrl?:       string
+  jiraTicketId?:  string
 }
 
 export type SpStatus = "pending" | "running" | "passed" | "failed" | "locked"

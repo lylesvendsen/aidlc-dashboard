@@ -1,0 +1,67 @@
+{
+  "id": "B4-2026-03-28T21-19-36",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B4",
+  "unitTitle": "Jira Support and Methodology Integration",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B4-jira-support-and-methodology-integration.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T21:19:36.859Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Jira URL parsing and SpecFile type update",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "Jira badge on spec card and commit message prefix",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Wire AIDLC-METHODOLOGY.md into Spec Assistant",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-04",
+      "name": "Fix Spec Assistant bugs",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "df1177f435bdd85f93912412562f1f7e20915e09"
+}
