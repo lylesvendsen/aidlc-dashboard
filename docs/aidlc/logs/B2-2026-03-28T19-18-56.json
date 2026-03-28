@@ -1,0 +1,38 @@
+{
+  "id": "B2-2026-03-28T19-18-56",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B2",
+  "unitTitle": "Spec Editor Improvements",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B2-spec-editor-improvements.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T19:18:56.126Z",
+  "status": "passed",
+  "durationMs": 54212,
+  "subPrompts": [
+    {
+      "id": "SP-05",
+      "name": "Single file regeneration",
+      "status": "passed",
+      "durationMs": 54211,
+      "tokens": {
+        "input": 17656,
+        "output": 4786
+      },
+      "filesWritten": [
+        "src/components/run/RegenerateFileButton.tsx",
+        "src/app/api/regenerate-file/route.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "214aebcf129e2acedd7041abe527f8e2c2be7aad"
+}

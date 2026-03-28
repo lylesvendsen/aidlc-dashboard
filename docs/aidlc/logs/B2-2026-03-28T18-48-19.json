@@ -1,0 +1,80 @@
+{
+  "id": "B2-2026-03-28T18-48-19",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B2",
+  "unitTitle": "Spec Editor Improvements",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B2-spec-editor-improvements.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T18:48:19.952Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "SP accordion with three tabs",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "Prompt override mode",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Diff view before applying files",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-04",
+      "name": "Spec version history",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-05",
+      "name": "Single file regeneration",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "214aebcf129e2acedd7041abe527f8e2c2be7aad"
+}

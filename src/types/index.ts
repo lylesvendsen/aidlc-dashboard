@@ -6,6 +6,7 @@ export interface Project {
   specDir:        string
   logsDir:        string
   model:          string
+  maxTokens?:      number
   projectContext: string
   constraints:    string[]
   validation: {

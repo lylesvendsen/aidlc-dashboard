@@ -1,0 +1,66 @@
+{
+  "id": "B2-2026-03-28T18-54-43",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B2",
+  "unitTitle": "Spec Editor Improvements",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B2-spec-editor-improvements.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T18:54:43.191Z",
+  "status": "failed",
+  "durationMs": 211326,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "SP accordion with three tabs",
+      "status": "passed",
+      "durationMs": 164700,
+      "tokens": {
+        "input": 75780,
+        "output": 14987
+      },
+      "filesWritten": [
+        "src/components/spec-editor/SubPromptAccordion.tsx",
+        "src/components/spec-editor/SpecTab.tsx",
+        "src/components/spec-editor/PromptTab.tsx",
+        "src/components/spec-editor/ResponseTab.tsx",
+        "src/app/api/generated-prompt/route.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-02",
+      "name": "Prompt override mode",
+      "status": "failed",
+      "durationMs": 46626,
+      "tokens": {
+        "input": 9682,
+        "output": 3594
+      },
+      "filesWritten": [
+        "src/components/spec-editor/PromptOverride.tsx",
+        "src/app/api/run-with-override/route.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": false,
+          "status": "failed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/components/spec-editor/PromptOverride.tsx(4,49): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+        }
+      ],
+      "error": "Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/components/spec-editor/PromptOverride.tsx(4,49): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "214aebcf129e2acedd7041abe527f8e2c2be7aad",
+  "error": "Failed at SP-02: Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/components/spec-editor/PromptOverride.tsx(4,49): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+}

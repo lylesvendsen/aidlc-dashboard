@@ -1,0 +1,43 @@
+{
+  "id": "B2-2026-03-28T18-48-25",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B2",
+  "unitTitle": "Spec Editor Improvements",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B2-spec-editor-improvements.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T18:48:25.153Z",
+  "status": "failed",
+  "durationMs": 162304,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "SP accordion with three tabs",
+      "status": "failed",
+      "durationMs": 162302,
+      "tokens": {
+        "input": 41542,
+        "output": 14743
+      },
+      "filesWritten": [
+        "src/components/spec-editor/SubPromptAccordion.tsx",
+        "src/components/spec-editor/SpecTab.tsx",
+        "src/components/spec-editor/PromptTab.tsx",
+        "src/components/spec-editor/ResponseTab.tsx",
+        "src/app/api/generated-prompt/route.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": false,
+          "status": "failed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/app/projects/[id]/config/page.tsx(42,11): error TS2353: Object literal may only specify known properties, and 'maxTokens' does not exist in type 'SetStateAction<{ name: string; description: string; appDir: string; specDir: string; logsDir: string; model: string; projectContext: string; constraints: string; afterEachSubPrompt: string; afterUnit: string; autoCommit: boolean; autoTag: boolean; commitMessage: string; tagTemplate: string; }>'.\n\nCommand failed: npm run typecheck"
+        }
+      ],
+      "error": "Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/app/projects/[id]/config/page.tsx(42,11): error TS2353: Object literal may only specify known properties, and 'maxTokens' does not exist in type 'SetStateAction<{ name: string; description: string; appDir: string; specDir: string; logsDir: string; model: string; projectContext: string; constraints: string; afterEachSubPrompt: string; afterUnit: string; autoCommit: boolean; autoTag: boolean; commitMessage: string; tagTemplate: string; }>'.\n\nC"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "214aebcf129e2acedd7041abe527f8e2c2be7aad",
+  "error": "Failed at SP-01: Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/app/projects/[id]/config/page.tsx(42,11): error TS2353: Object literal may only specify known properties, and 'maxTokens' does not exist in type 'SetStateAction<{ name: string; description: string; appDir: string; specDir: string; logsDir: string; model: string; projectContext: string; constraints: string; afterEachSubPrompt: string; afterUnit: string; autoCommit: boolean; autoTag: boolean; commitMessage: string; tagTemplate: string; }>'.\n\nC"
+}
