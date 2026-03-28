@@ -304,7 +304,7 @@ async function callClaude(prompt: string, model: string) {
   const client  = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   const message = await client.messages.create({
     model,
-    max_tokens: 8192,
+    max_tokens: 16000,
     messages: [{ role: "user", content: prompt }],
   })
   const text = message.content.find(b => b.type === "text")?.text ?? ""

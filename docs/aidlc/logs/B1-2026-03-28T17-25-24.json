@@ -1,0 +1,54 @@
+{
+  "id": "B1-2026-03-28T17-25-24",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B1",
+  "unitTitle": "Spec Authoring Assistant",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B1-spec-authoring-assistant.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T17:25:24.523Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Spec assistant API route",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "Conversational UI",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Spec assistant page and entry points",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "fa23cdc9501a53e7455a92cc5600f2e9011a0bd7"
+}
