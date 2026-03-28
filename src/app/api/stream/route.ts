@@ -8,6 +8,7 @@ export async function GET(req: Request) {
   const specFile  = searchParams.get("specFile")
   const fromSpId  = searchParams.get("fromSpId") ?? undefined
   const onlySpId  = searchParams.get("onlySpId") ?? undefined
+  const dryRun    = searchParams.get("dryRun") === "true"
 
   if (!projectId || !specFile) {
     return new Response("projectId and specFile required", { status: 400 })
@@ -22,12 +23,14 @@ export async function GET(req: Request) {
   const stream  = new ReadableStream({
     async start(controller) {
       try {
-        for await (const event of runSpec(project, spec, fromSpId, onlySpId)) {
+        for await (const event of runSpec(project, spec, fromSpId, onlySpId, dryRun)) {
           controller.enqueue(encoder.encode("data: " + JSON.stringify(event) + "\n\n"))
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
-        controller.enqueue(encoder.encode('data: {"type":"error","message":"' + msg + '"}\n\n'))
+        controller.enqueue(encoder.encode(
+          'data: {"type":"error","message":"' + msg.replace(/"/g, '\\"') + '"}\n\n'
+        ))
       } finally {
         controller.close()
       }

@@ -13,6 +13,7 @@ export async function* runSpec(
   spec:      SpecFile,
   fromSpId?: string,
   onlySpId?: string,
+  dryRun = false,
 ): AsyncGenerator<StreamEvent> {
   const appDir  = path.resolve(project.appDir)
   const logsDir = path.resolve(project.logsDir)
@@ -48,7 +49,7 @@ export async function* runSpec(
   for (const sp of toRun) {
     yield { type: "sp_start", message: "Running " + sp.id + ": " + sp.name, spId: sp.id, spName: sp.name }
 
-    const spResult = await executeSubPrompt(spec, sp, project, appDir, model)
+    const spResult = await executeSubPrompt(spec, sp, project, appDir, model, dryRun)
     log.subPrompts.push(spResult)
 
     if (spResult.status === "failed") {
@@ -76,6 +77,7 @@ async function executeSubPrompt(
   project: Project,
   appDir:  string,
   model:   string,
+  dryRun = false,
 ): Promise<SubPromptResult> {
   const start  = Date.now()
   const result: SubPromptResult = {
@@ -84,6 +86,11 @@ async function executeSubPrompt(
   }
 
   try {
+    if (dryRun) {
+      result.status    = "passed"
+      result.durationMs = Date.now() - start
+      return result
+    }
     const prompt = buildPrompt(spec, sp, project, appDir)
     const { response, tokens } = await callClaude(prompt, model)
     result.tokens = tokens
@@ -160,7 +167,7 @@ function extractMentionedFiles(spBody: string): string[] {
   const paths = new Set<string>()
 
   // Match lines that look like file paths (contain / and a file extension)
-  const filePattern = /([a-zA-Z0-9_-./]+.[a-zA-Z]{1,5})/g
+  const filePattern = /([a-zA-Z0-9_.\/-]+[.][a-zA-Z]{1,5})/g
   const matches = spBody.match(filePattern) ?? []
 
   for (const match of matches) {
