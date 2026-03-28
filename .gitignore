@@ -1,5 +1,12 @@
+cat > .gitignore << 'EOF'
 node_modules/
 .next/
 .env
 .env.local
 data/projects/*/logs/
+*.log
+.DS_Store
+EOF
+git add .gitignore
+git commit -m "add gitignore"
+git push
