@@ -1,0 +1,32 @@
+{
+  "name": "aidlc-dashboard",
+  "version": "1.0.0",
+  "description": "AIDLC Dashboard — local web app for managing AI-driven development",
+  "private": true,
+  "scripts": {
+    "dev":       "next dev --port 7777",
+    "build":     "next build",
+    "start":     "next start --port 7777",
+    "lint":      "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk":      "^0.24.0",
+    "@codemirror/lang-markdown": "^6.2.0",
+    "@codemirror/theme-one-dark": "^6.1.0",
+    "@uiw/react-codemirror":  "^4.21.0",
+    "next":                   "^15.0.0",
+    "react":                  "^19.0.0",
+    "react-dom":              "^19.0.0",
+    "react-markdown":         "^9.0.0",
+    "zustand":                "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node":    "^20.0.0",
+    "@types/react":   "^19.0.0",
+    "autoprefixer":   "^10.4.0",
+    "postcss":        "^8.4.0",
+    "tailwindcss":    "^3.4.0",
+    "typescript":     "^5.4.0"
+  }
+}

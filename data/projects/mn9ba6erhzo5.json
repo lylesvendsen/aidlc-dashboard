@@ -1,0 +1,38 @@
+{
+  "id": "mn9ba6erhzo5",
+  "name": "OverBoardom",
+  "description": "Platform for board games across platforms",
+  "appDir": "/Users/A6002823/Code-Private/overboardom/overboardom-app",
+  "specDir": "/Users/A6002823/Code-Private/overboardom/overboardom-app/docs/aidlc/specs",
+  "logsDir": "/Users/A6002823/Code-Private/overboardom/overboardom-app/docs/aidlc/logs",
+  "model": "claude-sonnet-4-6",
+  "projectContext": "OverBoardom is a cross-platform multiplayer board game platform targeting couples and friend groups who want a casual digital game night experience. The first playable game is Loot — a 5-10 minute card game where players bid on treasure tiles.\n\nStack:\n- Web: Next.js 15, React 19, TypeScript (strict)\n- Mobile: Expo managed workflow (iOS + Android)\n- API: tRPC on Next.js API routes\n- Database: Firebase Firestore (real-time subscriptions)\n- Auth: Firebase Auth — Google sign-in only (v1)\n- Background jobs: Firebase Cloud Functions (async work only)\n- Hosting: Vercel (web + API), Firebase (functions)\n- Email: Resend with react-email templates\n- CI/CD: GitHub Actions\n\nArchitecture principles:\n- Game engine is 100% server-side — client never imports engine code\n- Client is a pure view layer — subscribes to Firestore, dispatches actions via tRPC\n- All game logic, rules, and state transitions happen in the API\n- Game rules are config-driven (GameConfig schema) with reducers for complexity\n- Immutable state at the Firestore boundary — reducers return new state\n\nMonorepo structure:\n- apps/web — Next.js 15 web app\n- apps/mobile — Expo mobile app\n- packages/core — game engine (server-only, never imported by client)\n- packages/games — game configs including Loot (server-only)\n- packages/ui — shared React component library\n- packages/shared — Firebase helpers, profiles, notifications\n- functions/ — Cloud Functions for async background work\n\nDesign system:\n- Tailwind with custom brand/surface/border tokens\n- Component library in packages/ui with variant props (not style props)\n- CSS class system in design-system.css for semantic named classes\n- Inline styles only for dynamic game state values or LayeredAsset positioning\n\nPhase: Active development. Core architecture locked in. Building unit by unit using AIDLC spec-driven methodology with automated acceptance tests per unit.",
+  "constraints": [
+    "TypeScript strict mode throughout",
+    "Never hardcode credentials or secrets",
+    "Write ALL failing tests before any implementation code",
+    "Run npm run typecheck and npm run lint before marking done",
+    "Never import variables, types, or modules that are not used in the file"
+  ],
+  "validation": {
+    "afterEachSubPrompt": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run test"
+    ],
+    "afterUnit": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run test",
+      "npm run build"
+    ]
+  },
+  "git": {
+    "autoCommit": true,
+    "autoTag": true,
+    "commitMessage": "{unitId} complete: {unitTitle}",
+    "tagTemplate": "{unitId}-{timestamp}"
+  },
+  "createdAt": "2026-03-27T19:45:50.067Z",
+  "updatedAt": "2026-03-27T22:18:08.059Z"
+}
