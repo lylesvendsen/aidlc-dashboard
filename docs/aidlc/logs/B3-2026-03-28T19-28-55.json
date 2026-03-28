@@ -1,0 +1,89 @@
+{
+  "id": "B3-2026-03-28T19-28-55",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B3",
+  "unitTitle": "Run Page Polish",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B3-run-page-polish.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T19:28:55.450Z",
+  "status": "failed",
+  "durationMs": 145661,
+  "subPrompts": [
+    {
+      "id": "SP-02",
+      "name": "SP dependency annotations",
+      "status": "passed",
+      "durationMs": 40360,
+      "tokens": {
+        "input": 28947,
+        "output": 3202
+      },
+      "filesWritten": [
+        "src/components/spec-editor/DependencyAnnotator.tsx",
+        "src/lib/dependency-checker.ts",
+        "apps/web/src/lib/firebase.ts",
+        "apps/web/package.json"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-03",
+      "name": "Per-attempt notes and side-by-side comparison",
+      "status": "passed",
+      "durationMs": 59171,
+      "tokens": {
+        "input": 16527,
+        "output": 5447
+      },
+      "filesWritten": [
+        "src/components/run/AttemptNotes.tsx",
+        "src/components/run/AttemptComparison.tsx",
+        "src/app/api/attempt-notes/route.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-04",
+      "name": "Project dependency graph",
+      "status": "failed",
+      "durationMs": 46130,
+      "tokens": {
+        "input": 9894,
+        "output": 3969
+      },
+      "filesWritten": [
+        "src/components/projects/DependencyGraph.tsx",
+        "src/lib/graph.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": false,
+          "status": "failed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/lib/graph.ts(65,39): error TS2339: Property 'specId' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,36): error TS2339: Property 'createdAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,36): error TS2339: Property 'createdAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(78,49): error TS2339: Property 'overallStatus' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(80,7): error TS2367: This comparison appears to be unintentional because the types '\"passed\" | \"failed\" | \"in_progress\"' and '\"running\"' have no overlap.\nsrc/lib/graph.ts(80,38): error TS2367: This comparison appears to be unintentional because the types '\"passed\" | \"failed\" | \"in_progress\"' and '\"in-progress\"' have no overlap.\nsrc/lib/graph.ts(83,37): error TS2367: This comparison appears to be unintentional because the types '\"failed\" | \"in_progress\"' and '\"success\"' have no overlap.\nsrc/lib/graph.ts(83,68): error TS2367: This comparison appears to be unintentional because the types '\"failed\" | \"in_progress\"' and '\"completed\"' have no overlap.\nsrc/lib/graph.ts(86,37): error TS2367: This comparison appears to be unintentional because the types '\"in_progress\"' and '\"error\"' have no overlap.\nsrc/lib/graph.ts(100,39): error TS2339: Property 'path' does not exist on type 'SpecFile'.\nsrc/lib/graph.ts(104,26): error TS2339: Property 'content' does not exist on type 'SpecFile'.\nsrc/lib/graph.ts(105,63): error TS2339: Property 'name' does not exist on type 'SpecFile'.\nsrc/lib/graph.ts(112,22): error TS2339: Property 'path' does not exist on type 'SpecFile'.\nsrc/lib/graph.ts(117,26): error TS2339: Property 'content' does not exist on type 'SpecFile'.\nsrc/lib/graph.ts(118,39): error TS2339: Property 'path' does not exist on type 'SpecFile'.\n\nCommand failed: npm run typecheck"
+        }
+      ],
+      "error": "Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/lib/graph.ts(65,39): error TS2339: Property 'specId' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,36): error TS2339: Property 'createdAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,36): error TS2339: Property 'created"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "718134e1e095eb4b5e47ae91b2ff9617345d6861",
+  "error": "Failed at SP-04: Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/lib/graph.ts(65,39): error TS2339: Property 'specId' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(72,36): error TS2339: Property 'createdAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,21): error TS2339: Property 'startedAt' does not exist on type 'ExecutionLog'.\nsrc/lib/graph.ts(73,36): error TS2339: Property 'created"
+}

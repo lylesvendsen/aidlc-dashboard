@@ -1,0 +1,67 @@
+{
+  "id": "B3-2026-03-28T19-22-19",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B3",
+  "unitTitle": "Run Page Polish",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B3-run-page-polish.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T19:22:19.920Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Constraint toggles on run page",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "SP dependency annotations",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Per-attempt notes and side-by-side comparison",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-04",
+      "name": "Project dependency graph",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "718134e1e095eb4b5e47ae91b2ff9617345d6861"
+}

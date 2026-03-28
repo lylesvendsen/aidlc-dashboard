@@ -1,0 +1,64 @@
+{
+  "id": "B3-2026-03-28T19-22-22",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B3",
+  "unitTitle": "Run Page Polish",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B3-run-page-polish.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T19:22:22.869Z",
+  "status": "failed",
+  "durationMs": 66800,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Constraint toggles on run page",
+      "status": "passed",
+      "durationMs": 26655,
+      "tokens": {
+        "input": 3913,
+        "output": 2415
+      },
+      "filesWritten": [
+        "src/components/run/ConstraintToggles.tsx"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-02",
+      "name": "SP dependency annotations",
+      "status": "failed",
+      "durationMs": 40145,
+      "tokens": {
+        "input": 23559,
+        "output": 3250
+      },
+      "filesWritten": [
+        "src/components/spec-editor/DependencyAnnotator.tsx",
+        "src/lib/dependency-checker.ts",
+        "apps/web/src/lib/firebase.ts",
+        "apps/web/package.json"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": false,
+          "status": "failed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\napps/web/src/lib/firebase.ts(5,53): error TS2307: Cannot find module 'firebase/app' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+        }
+      ],
+      "error": "Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\napps/web/src/lib/firebase.ts(5,53): error TS2307: Cannot find module 'firebase/app' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "718134e1e095eb4b5e47ae91b2ff9617345d6861",
+  "error": "Failed at SP-02: Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\napps/web/src/lib/firebase.ts(5,53): error TS2307: Cannot find module 'firebase/app' or its corresponding type declarations.\n\nCommand failed: npm run typecheck"
+}
