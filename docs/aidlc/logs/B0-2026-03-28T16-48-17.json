@@ -1,0 +1,41 @@
+{
+  "id": "B0-2026-03-28T16-48-17",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B0",
+  "unitTitle": "Run Page v2",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B0-run-page-v2.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T16:48:17.283Z",
+  "status": "failed",
+  "durationMs": 65963,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Sub-prompt tree component",
+      "status": "failed",
+      "durationMs": 65963,
+      "tokens": {
+        "input": 3725,
+        "output": 5275
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        },
+        {
+          "command": "npm run lint",
+          "passed": false,
+          "output": "\n> aidlc-dashboard@1.0.0 lint\n> next lint\n\n? How would you like to configure ESLint? https://nextjs.org/docs/app/api-reference/config/eslint\n\u001b[?25l❯  Strict (recommended)\n   Base\n   Cancel\n`next lint` is deprecated and will be removed in Next.js 16.\nFor new projects, use create-next-app to choose your preferred linter.\nFor existing projects, migrate to the ESLint CLI:\nnpx @next/codemod@canary next-lint-to-eslint-cli .\n\n ⚠ If you set up ESLint yourself, we recommend adding the Next.js ESLint plugin. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n\nCommand failed: npm run lint\n`next lint` is deprecated and will be removed in Next.js 16.\nFor new projects, use create-next-app to choose your preferred linter.\nFor existing projects, migrate to the ESLint CLI:\nnpx @next/codemod@canary next-lint-to-eslint-cli .\n\n ⚠ If you set up ESLint yourself, we recommend adding the Next.js ESLint plugin. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n"
+        }
+      ],
+      "error": "Validation failed:\nnpm run lint:\n\n> aidlc-dashboard@1.0.0 lint\n> next lint\n\n? How would you like to configure ESLint? https://nextjs.org/docs/app/api-reference/config/eslint\n\u001b[?25l❯  Strict (recommended)\n   Base\n   Cancel\n`next lint` is deprecated and will be removed in Next.js 16.\nFor new projects, use create-next-app to choose your preferred linter.\nFor existing projects, migrate to the ESLint CLI:\nnpx @next/codemod@canary next-lint-to-eslint-cli .\n\n ⚠ If you set up ESLint yourself, we recommend adding the Next.js ESLint plug"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "bc8aec4c12940dece12646798b61e1c55ef39175",
+  "error": "Failed at SP-01: Validation failed:\nnpm run lint:\n\n> aidlc-dashboard@1.0.0 lint\n> next lint\n\n? How would you like to configure ESLint? https://nextjs.org/docs/app/api-reference/config/eslint\n\u001b[?25l❯  Strict (recommended)\n   Base\n   Cancel\n`next lint` is deprecated and will be removed in Next.js 16.\nFor new projects, use create-next-app to choose your preferred linter.\nFor existing projects, migrate to the ESLint CLI:\nnpx @next/codemod@canary next-lint-to-eslint-cli .\n\n ⚠ If you set up ESLint yourself, we recommend adding the Next.js ESLint plug"
+}

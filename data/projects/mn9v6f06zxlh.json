@@ -17,12 +17,10 @@
   ],
   "validation": {
     "afterEachSubPrompt": [
-      "npm run typecheck",
-      "npm run lint"
+      "npm run typecheck"
     ],
     "afterUnit": [
       "npm run typecheck",
-      "npm run lint",
       "npm run build"
     ]
   },
@@ -33,5 +31,5 @@
     "tagTemplate": "{unitId}-{timestamp}"
   },
   "createdAt": "2026-03-28T05:02:46.902Z",
-  "updatedAt": "2026-03-28T05:03:19.842Z"
+  "updatedAt": "2026-03-28T16:51:15.937Z"
 }

@@ -133,7 +133,7 @@ async function executeSubPrompt(
     if (validationCmds.length > 0) {
       const validations = validationCmds.map(cmd => {
         const res = runCommand(cmd, appDir)
-        return { command: cmd, passed: res.success, output: res.output }
+        return { command: cmd, passed: res.success, status: res.success ? "passed" as const : "failed" as const, output: res.output }
       })
       result.validation = validations
       const failed = validations.filter(v => !v.passed)

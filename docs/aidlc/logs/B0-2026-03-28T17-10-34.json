@@ -1,0 +1,80 @@
+{
+  "id": "B0-2026-03-28T17-10-34",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B0",
+  "unitTitle": "Run Page v2",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B0-run-page-v2.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T17:10:34.750Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Sub-prompt tree component",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "Inline validation output per SP",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Attempt history per SP",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-04",
+      "name": "Token and cost tracker",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-05",
+      "name": "Redesigned run page layout",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "bc8aec4c12940dece12646798b61e1c55ef39175"
+}

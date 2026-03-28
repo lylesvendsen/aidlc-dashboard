@@ -42,10 +42,14 @@ export interface SpecFile {
   lastStatus?: "passed" | "failed"
 }
 
+export type SpStatus = "pending" | "running" | "passed" | "failed" | "locked"
+
 export interface ValidationResult {
-  command: string
-  passed:  boolean
-  output:  string
+  command:     string
+  status:      "passed" | "failed" | "skipped"
+  passed:      boolean
+  output:      string
+  errorCount?: number
 }
 
 export interface SubPromptResult {

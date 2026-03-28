@@ -1,0 +1,120 @@
+{
+  "id": "B0-2026-03-28T17-10-45",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B0",
+  "unitTitle": "Run Page v2",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B0-run-page-v2.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T17:10:45.682Z",
+  "status": "passed",
+  "durationMs": 304422,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Sub-prompt tree component",
+      "status": "passed",
+      "durationMs": 60019,
+      "tokens": {
+        "input": 3880,
+        "output": 5041
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-02",
+      "name": "Inline validation output per SP",
+      "status": "passed",
+      "durationMs": 84689,
+      "tokens": {
+        "input": 7806,
+        "output": 7356
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-03",
+      "name": "Attempt history per SP",
+      "status": "passed",
+      "durationMs": 40261,
+      "tokens": {
+        "input": 3710,
+        "output": 3461
+      },
+      "filesWritten": [
+        "src/lib/attempts.ts",
+        "src/components/run/AttemptHistory.tsx"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-04",
+      "name": "Token and cost tracker",
+      "status": "passed",
+      "durationMs": 35334,
+      "tokens": {
+        "input": 3708,
+        "output": 2917
+      },
+      "filesWritten": [
+        "src/components/run/CostTracker.tsx"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-05",
+      "name": "Redesigned run page layout",
+      "status": "passed",
+      "durationMs": 84118,
+      "tokens": {
+        "input": 3838,
+        "output": 8192
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "bc8aec4c12940dece12646798b61e1c55ef39175"
+}
