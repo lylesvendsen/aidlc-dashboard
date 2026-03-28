@@ -84,13 +84,14 @@ async function executeSubPrompt(
   }
 
   try {
-    // Step 1: Build prompt and call Claude
     const prompt = buildPrompt(spec, sp, project, appDir)
     const { response, tokens } = await callClaude(prompt, model)
     result.tokens = tokens
 
-    // Step 2: Write all files first
     const parsed = parseClaudeResponse(response)
+    if (parsed.notes) console.log("  Notes: " + parsed.notes)
+
+    // Write all files first
     for (const file of parsed.files) {
       const fullPath = path.resolve(appDir, file.path)
       fs.mkdirSync(path.dirname(fullPath), { recursive: true })
@@ -98,8 +99,7 @@ async function executeSubPrompt(
       result.filesWritten.push(file.path)
     }
 
-    // Step 3: Run commands AFTER files are written
-    // Filter out validation commands — those run separately below
+    // Run setup commands (not validation)
     const VALIDATION_CMDS = ["npm run typecheck", "npm run lint", "npm run test", "npm run build"]
     const setupCommands = parsed.commands.filter(cmd =>
       !VALIDATION_CMDS.some(v => cmd.trim().startsWith(v.trim()))
@@ -109,13 +109,11 @@ async function executeSubPrompt(
       const res = runCommand(cmd, appDir)
       result.commandsRun.push(cmd)
       if (!res.success) {
-        // For npm install failures, include output but don't fail immediately
-        // if files were written — it may be a workspace issue
-        if (cmd.includes("npm install") && result.filesWritten.length > 0) {
-          // Try npm install with legacy peer deps as fallback
+        // Retry npm install with legacy peer deps
+        if (cmd.includes("npm install")) {
           const fallback = runCommand(cmd + " --legacy-peer-deps", appDir)
           if (!fallback.success) {
-            throw new Error("Command failed: " + cmd + "\n" + res.output + "\n" + fallback.output)
+            throw new Error("Command failed: " + cmd + "\n" + res.output)
           }
         } else {
           throw new Error("Command failed: " + cmd + "\n" + res.output)
@@ -123,8 +121,7 @@ async function executeSubPrompt(
       }
     }
 
-    // Step 4: Run validation commands from project config
-    // Only run if there are validation commands configured
+    // Run validation
     const validationCmds = project.validation?.afterEachSubPrompt ?? []
     if (validationCmds.length > 0) {
       const validations = validationCmds.map(cmd => {
@@ -132,7 +129,6 @@ async function executeSubPrompt(
         return { command: cmd, passed: res.success, output: res.output }
       })
       result.validation = validations
-
       const failed = validations.filter(v => !v.passed)
       if (failed.length > 0) {
         throw new Error(
@@ -154,9 +150,103 @@ async function executeSubPrompt(
   return result
 }
 
-function buildPrompt(spec: SpecFile, sp: SubPromptDef, project: Project, appDir: string): string {
-  const filetree    = getFiletree(appDir)
-  const constraints = project.constraints.map(c => "- " + c).join("\n")
+// ── Context injection ─────────────────────────────────────────────────────────
+
+/**
+ * Extract file paths mentioned in the SP body.
+ * Looks for patterns like: path/to/file.ts or apps/web/src/...
+ */
+function extractMentionedFiles(spBody: string): string[] {
+  const paths = new Set<string>()
+
+  // Match lines that look like file paths (contain / and a file extension)
+  const filePattern = /([a-zA-Z0-9_-./]+.[a-zA-Z]{1,5})/g
+  const matches = spBody.match(filePattern) ?? []
+
+  for (const match of matches) {
+    // Filter to only things that look like real relative file paths
+    if (
+      match.includes("/") &&
+      !match.startsWith("http") &&
+      !match.startsWith("@") &&
+      !match.includes("..") &&
+      match.split(".").length >= 2
+    ) {
+      paths.add(match)
+    }
+  }
+
+  return Array.from(paths)
+}
+
+/**
+ * Read existing file contents for files mentioned in the SP.
+ * Only reads files that already exist in appDir.
+ * Caps each file at 200 lines to avoid prompt bloat.
+ */
+function getExistingFileContents(
+  spBody:  string,
+  appDir:  string,
+  maxLines = 200,
+): { path: string; content: string; truncated: boolean }[] {
+  const mentionedPaths = extractMentionedFiles(spBody)
+  const results: { path: string; content: string; truncated: boolean }[] = []
+
+  for (const relPath of mentionedPaths) {
+    const fullPath = path.resolve(appDir, relPath)
+    if (!fs.existsSync(fullPath)) continue
+
+    const stat = fs.statSync(fullPath)
+    if (!stat.isFile()) continue
+    if (stat.size > 100_000) continue // skip very large files
+
+    try {
+      const raw   = fs.readFileSync(fullPath, "utf-8")
+      const lines = raw.split("\n")
+      const truncated = lines.length > maxLines
+      const content   = truncated
+        ? lines.slice(0, maxLines).join("\n") + "\n... (truncated at " + maxLines + " lines)"
+        : raw
+
+      results.push({ path: relPath, content, truncated })
+    } catch {
+      // Skip files we can't read
+    }
+  }
+
+  return results
+}
+
+// ── Prompt builder ────────────────────────────────────────────────────────────
+
+function buildPrompt(
+  spec:    SpecFile,
+  sp:      SubPromptDef,
+  project: Project,
+  appDir:  string,
+): string {
+  const filetree        = getFiletree(appDir)
+  const constraints     = project.constraints.map(c => "- " + c).join("\n")
+  const existingFiles   = getExistingFileContents(sp.body, appDir)
+
+  // Build existing files section
+  let existingFilesSection = ""
+  if (existingFiles.length > 0) {
+    const fileBlocks = existingFiles.map(f =>
+      "--- " + f.path + (f.truncated ? " (truncated)" : "") + " ---\n" +
+      f.content + "\n--- end " + f.path + " ---"
+    ).join("\n\n")
+
+    existingFilesSection = [
+      "",
+      "EXISTING FILE CONTENTS (files already on disk that this SP references):",
+      "Read these carefully before writing any code.",
+      "When modifying a file: preserve existing logic, only add or change what the SP requires.",
+      "When creating a new file: use these as context for imports and patterns to follow.",
+      "",
+      fileBlocks,
+    ].join("\n")
+  }
 
   return [
     "You are implementing a unit of work in a spec-driven AI-DLC project.",
@@ -173,8 +263,9 @@ function buildPrompt(spec: SpecFile, sp: SubPromptDef, project: Project, appDir:
     "ACCEPTANCE CRITERIA FOR THIS SUB-PROMPT:",
     sp.criteria.join("\n"),
     "",
-    "CURRENT CODEBASE STATE (files already in app directory):",
+    "CURRENT CODEBASE STRUCTURE:",
     filetree,
+    existingFilesSection,
     "",
     "CONSTRAINTS (never violate):",
     constraints,
@@ -183,20 +274,24 @@ function buildPrompt(spec: SpecFile, sp: SubPromptDef, project: Project, appDir:
     "Respond with a valid JSON object only. No markdown fences. No explanation outside the JSON.",
     '{',
     '  "files": [',
-    '    { "path": "relative/path/from/appDir/file.ts", "content": "complete file content here" }',
+    '    { "path": "relative/path/from/appDir/file.ts", "content": "complete file content" }',
     '  ],',
-    '  "commands": ["npm install"],',
-    '  "notes": "Brief implementation notes"',
+    '  "commands": ["npm install some-package"],',
+    '  "notes": "Brief notes on what you did and any decisions made"',
     '}',
     "",
-    "IMPORTANT:",
+    "CRITICAL RULES:",
     "- All file paths are relative to the application directory root",
-    "- Include COMPLETE file content for every file — no truncation, no ellipsis",
-    "- Only include setup commands (npm install, etc.) — NOT validation commands like npm run test",
-    "- Write ALL files before any npm install commands are needed",
-    "- If running npm install, it will run AFTER all files are written",
+    "- Include COMPLETE file content for every file — no truncation, no ellipsis, no TODO placeholders",
+    "- For files you are MODIFYING: include the full updated file, preserving existing logic",
+    "- For files you are CREATING: write the complete implementation",
+    "- Only include setup commands (npm install etc.) — NOT validation commands like npm run test",
+    "- Never import variables, types, or modules that are not used in the file",
+    "- Never use 'any' type unless absolutely unavoidable",
   ].join("\n")
 }
+
+// ── Claude API ────────────────────────────────────────────────────────────────
 
 async function callClaude(prompt: string, model: string) {
   const client  = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -215,7 +310,13 @@ async function callClaude(prompt: string, model: string) {
   }
 }
 
-function parseClaudeResponse(response: string): { files: {path:string;content:string}[]; commands: string[]; notes: string } {
+// ── Response parser ───────────────────────────────────────────────────────────
+
+function parseClaudeResponse(response: string): {
+  files:    { path: string; content: string }[]
+  commands: string[]
+  notes:    string
+} {
   const cleaned = response
     .replace(/^```json\n?/, "")
     .replace(/\n?```$/, "")
@@ -228,30 +329,12 @@ function parseClaudeResponse(response: string): { files: {path:string;content:st
       notes:    typeof p.notes === "string" ? p.notes  : "",
     }
   } catch {
-    console.error("Failed to parse Claude response as JSON:", cleaned.slice(0, 200))
+    console.error("Failed to parse Claude response:", cleaned.slice(0, 200))
     return { files: [], commands: [], notes: "parse-error" }
   }
 }
 
-function runCommand(cmd: string, cwd: string): { success: boolean; output: string } {
-  try {
-    const output = cp.execSync(cmd, {
-      cwd,
-      encoding: "utf-8",
-      timeout:  180_000,  // 3 min for npm install
-      stdio:    "pipe",
-      env:      { ...process.env, NODE_ENV: "development" },
-    })
-    return { success: true, output: output ?? "" }
-  } catch (err: unknown) {
-    if (err && typeof err === "object" && ("stdout" in err || "stderr" in err)) {
-      const e = err as { stdout?: string; stderr?: string; message?: string }
-      const output = [e.stdout, e.stderr, e.message].filter(Boolean).join("\n")
-      return { success: false, output }
-    }
-    return { success: false, output: String(err) }
-  }
-}
+// ── Filesystem helpers ────────────────────────────────────────────────────────
 
 function getFiletree(dir: string, depth = 3, prefix = ""): string {
   if (!fs.existsSync(dir)) return "(app directory does not exist yet)"
@@ -274,12 +357,30 @@ function getFiletree(dir: string, depth = 3, prefix = ""): string {
   }).join("\n")
 }
 
+function runCommand(cmd: string, cwd: string): { success: boolean; output: string } {
+  try {
+    const output = cp.execSync(cmd, {
+      cwd,
+      encoding: "utf-8",
+      timeout:  180_000,
+      stdio:    "pipe",
+      env:      { ...process.env, NODE_ENV: "development" },
+    })
+    return { success: true, output: output ?? "" }
+  } catch (err: unknown) {
+    if (err && typeof err === "object" && ("stdout" in err || "stderr" in err)) {
+      const e = err as { stdout?: string; stderr?: string; message?: string }
+      const output = [e.stdout, e.stderr, e.message].filter(Boolean).join("\n")
+      return { success: false, output }
+    }
+    return { success: false, output: String(err) }
+  }
+}
+
 function captureGitState(appDir: string): string | undefined {
   try {
     return cp.execSync("git rev-parse HEAD", {
-      cwd:      appDir,
-      encoding: "utf-8",
-      stdio:    "pipe",
+      cwd: appDir, encoding: "utf-8", stdio: "pipe",
     }).trim()
   } catch {
     return undefined
