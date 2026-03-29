@@ -188,7 +188,7 @@ export default function ProjectPage() {
                 <div className="flex gap-2 ml-4 shrink-0">
                   <Link
                     href={"/projects/" + id + "/specs/" + encodeURIComponent(spec.filename)}
-                    className="btn-ghost text-sm"
+                    className="btn-secondary text-sm"
                   >
                     Edit
                   </Link>

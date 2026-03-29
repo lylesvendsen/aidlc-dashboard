@@ -4,6 +4,23 @@ import type { Project } from "@/types"
 
 const DATA_DIR = path.resolve(process.cwd(), process.env.AIDLC_DATA_DIR ?? "./data", "projects")
 
+
+// Resolves a path that may be relative (./repo-name or repo-name)
+// Relative paths are resolved from the dashboard parent directory
+// so sibling repos can be referenced without absolute paths.
+// Absolute paths pass through unchanged (back-compatible).
+const DASHBOARD_DIR = process.cwd()
+const PARENT_DIR    = path.resolve(DASHBOARD_DIR, "..")
+
+export function resolvePath(p: string): string {
+  if (!p) return p
+  if (path.isAbsolute(p)) return p
+  const clean = p.startsWith("./") ? p.slice(2) : p
+  const base  = process.env.AIDLC_BASE_DIR
+    ? path.resolve(process.env.AIDLC_BASE_DIR)
+    : path.resolve(process.cwd(), "..")
+  return path.resolve(base, clean)
+}
 export function ensureDataDir() {
   fs.mkdirSync(DATA_DIR, { recursive: true })
 }

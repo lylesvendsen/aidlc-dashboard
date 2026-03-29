@@ -1,0 +1,61 @@
+{
+  "id": "TEST-2026-03-28T22-37-44",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "TEST",
+  "unitTitle": "Resume Functionality Canary",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/TEST-resume-canary.md",
+  "specVersion": "2.0",
+  "timestamp": "2026-03-28T22:37:44.569Z",
+  "status": "failed",
+  "durationMs": 7422,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Write passing canary file 1",
+      "status": "passed",
+      "durationMs": 3832,
+      "tokens": {
+        "input": 4262,
+        "output": 32
+      },
+      "filesWritten": [
+        "src/__tests__/scratch/canary-1.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-02",
+      "name": "Write intentionally broken TypeScript file",
+      "status": "failed",
+      "durationMs": 3589,
+      "tokens": {
+        "input": 4316,
+        "output": 54
+      },
+      "filesWritten": [
+        "src/__tests__/scratch/canary-broken-1.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": false,
+          "status": "failed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/__tests__/scratch/canary-broken-1.ts(3,7): error TS2322: Type 'number' is not assignable to type 'string'.\nsrc/__tests__/scratch/canary-broken-1.ts(4,7): error TS2322: Type 'string' is not assignable to type 'number'.\n\nCommand failed: npm run typecheck"
+        }
+      ],
+      "error": "Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/__tests__/scratch/canary-broken-1.ts(3,7): error TS2322: Type 'number' is not assignable to type 'string'.\nsrc/__tests__/scratch/canary-broken-1.ts(4,7): error TS2322: Type 'string' is not assignable to type 'number'.\n\nCommand failed: npm run typecheck"
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "a46622be1f27dfc68d9f295066c9a801b3ec6937",
+  "error": "Failed at SP-02: Validation failed:\nnpm run typecheck:\n\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\nsrc/__tests__/scratch/canary-broken-1.ts(3,7): error TS2322: Type 'number' is not assignable to type 'string'.\nsrc/__tests__/scratch/canary-broken-1.ts(4,7): error TS2322: Type 'string' is not assignable to type 'number'.\n\nCommand failed: npm run typecheck"
+}

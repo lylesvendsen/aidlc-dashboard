@@ -1,0 +1,125 @@
+{
+  "id": "TEST-2026-03-28T22-35-11",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "TEST",
+  "unitTitle": "Resume Functionality Canary",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/TEST-resume-canary.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T22:35:11.087Z",
+  "status": "passed",
+  "durationMs": 18419,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Write canary file 1",
+      "status": "passed",
+      "durationMs": 4227,
+      "tokens": {
+        "input": 4289,
+        "output": 34
+      },
+      "filesWritten": [
+        "docs/aidlc/scratch/canary-1.md"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-02",
+      "name": "Write intentionally broken TypeScript file",
+      "status": "passed",
+      "durationMs": 3368,
+      "tokens": {
+        "input": 4346,
+        "output": 45
+      },
+      "filesWritten": [
+        "docs/aidlc/scratch/canary-broken-1.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-03",
+      "name": "Write canary file 2",
+      "status": "passed",
+      "durationMs": 3489,
+      "tokens": {
+        "input": 4350,
+        "output": 42
+      },
+      "filesWritten": [
+        "docs/aidlc/scratch/canary-2.md"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-04",
+      "name": "Write second intentionally broken TypeScript file",
+      "status": "passed",
+      "durationMs": 3573,
+      "tokens": {
+        "input": 4362,
+        "output": 36
+      },
+      "filesWritten": [
+        "docs/aidlc/scratch/canary-broken-2.ts"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    },
+    {
+      "id": "SP-05",
+      "name": "Write final canary file and cleanup instructions",
+      "status": "passed",
+      "durationMs": 3762,
+      "tokens": {
+        "input": 4396,
+        "output": 54
+      },
+      "filesWritten": [
+        "docs/aidlc/scratch/canary-complete.md"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "a46622be1f27dfc68d9f295066c9a801b3ec6937"
+}

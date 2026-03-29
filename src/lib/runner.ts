@@ -7,6 +7,7 @@ import type {
   ExecutionLog, StreamEvent,
 } from "@/types"
 import { saveLog } from "./logs"
+import { resolvePath } from "./projects"
 
 const DEFAULT_MAX_TOKENS = 8192
 
@@ -17,8 +18,8 @@ export async function* runSpec(
   onlySpId?: string,
   dryRun = false,
 ): AsyncGenerator<StreamEvent> {
-  const appDir  = path.resolve(project.appDir)
-  const logsDir = path.resolve(project.logsDir)
+  const appDir  = resolvePath(project.appDir)
+  const logsDir = resolvePath(project.logsDir)
   const model   = process.env.AIDLC_MODEL ?? project.model
 
   const log: ExecutionLog = {
@@ -58,7 +59,7 @@ export async function* runSpec(
       log.status     = "failed"
       log.durationMs = Date.now() - startTime
       log.error      = "Failed at " + sp.id + ": " + spResult.error
-      saveLog(logsDir, log)
+      if (!dryRun) saveLog(logsDir, log)
       yield { type: "error", message: "Execution failed at " + sp.id }
       return
     }
@@ -68,7 +69,7 @@ export async function* runSpec(
 
   log.status     = "passed"
   log.durationMs = Date.now() - startTime
-  saveLog(logsDir, log)
+  if (!dryRun) saveLog(logsDir, log)
   yield { type: "done", message: spec.id + " complete in " + Math.round(log.durationMs / 1000) + "s" }
 }
 

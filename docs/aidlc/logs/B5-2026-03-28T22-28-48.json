@@ -1,0 +1,37 @@
+{
+  "id": "B5-2026-03-28T22-28-48",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B5",
+  "unitTitle": "Resume from Failed Sub-Prompt",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B5-resume-from-failed-sp.md",
+  "specVersion": "2.0",
+  "timestamp": "2026-03-28T22:28:48.226Z",
+  "status": "passed",
+  "durationMs": 44017,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Add Retry button and auto-start to run page",
+      "status": "passed",
+      "durationMs": 44017,
+      "tokens": {
+        "input": 7032,
+        "output": 3236
+      },
+      "filesWritten": [
+        "src/app/projects/[id]/run/page.tsx"
+      ],
+      "commandsRun": [],
+      "validation": [
+        {
+          "command": "npm run typecheck",
+          "passed": true,
+          "status": "passed",
+          "output": "\n> aidlc-dashboard@1.0.0 typecheck\n> tsc --noEmit\n\n"
+        }
+      ]
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "a46622be1f27dfc68d9f295066c9a801b3ec6937"
+}

@@ -1,0 +1,67 @@
+{
+  "id": "B5-resume-from-failed-sp-2026-03-28T22-26-29",
+  "projectId": "mn9v6f06zxlh",
+  "unitId": "B5-resume-from-failed-sp",
+  "unitTitle": "Resume Execution from Failed Sub-Prompt",
+  "specFile": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs/B5-resume-from-failed-sp-resume-execution-from-failed-sub-prompt.md",
+  "specVersion": "1.0",
+  "timestamp": "2026-03-28T22:26:29.211Z",
+  "status": "passed",
+  "durationMs": 1,
+  "subPrompts": [
+    {
+      "id": "SP-01",
+      "name": "Track failed SP ID in execution store",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-02",
+      "name": "Render inline Retry button next to failed SP label",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-03",
+      "name": "Wire up Retry button click to resume navigation",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    },
+    {
+      "id": "SP-04",
+      "name": "Verify fromSpId is correctly consumed by run page and execution API",
+      "status": "passed",
+      "durationMs": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "filesWritten": [],
+      "commandsRun": [],
+      "validation": []
+    }
+  ],
+  "finalValidation": [],
+  "gitStateBeforeRun": "a46622be1f27dfc68d9f295066c9a801b3ec6937"
+}

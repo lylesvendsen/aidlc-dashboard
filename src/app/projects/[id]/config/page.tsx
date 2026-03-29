@@ -128,6 +128,9 @@ export default function ConfigPage() {
         {field("App directory (absolute path)", "appDir", "/absolute/path/to/app")}
         {field("Spec directory (absolute path)", "specDir", "/absolute/path/to/specs")}
         {field("Logs directory (absolute path)", "logsDir", "/absolute/path/to/logs")}
+        <p className="text-xs text-blue-500 col-span-3">
+          Tip: Use relative paths like <span className="font-mono">../overboardom-app</span> — they resolve automatically from the dashboard parent directory.
+        </p>
         <div className="space-y-1">
           <label className="text-sm font-medium text-gray-700">Model</label>
           <select

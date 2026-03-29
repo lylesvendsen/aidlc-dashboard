@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { listLogs } from "@/lib/logs"
-import { getProject } from "@/lib/projects"
+import { getProject, resolvePath } from "@/lib/projects"
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -8,5 +8,5 @@ export async function GET(req: Request) {
   if (!projectId) return NextResponse.json({ error: "projectId required" }, { status: 400 })
   const project = getProject(projectId)
   if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 })
-  return NextResponse.json(listLogs(project.logsDir, projectId))
+  return NextResponse.json(listLogs(resolvePath(project.logsDir), projectId))
 }

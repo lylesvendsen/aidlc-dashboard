@@ -2,6 +2,7 @@ node_modules/
 .next/
 .env
 .env.local
+!.env.local.example
 data/projects/*/logs/
 *.log
 .DS_Store
