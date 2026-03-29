@@ -1,0 +1,36 @@
+{
+  "id": "mn9v6f06zxlh-app",
+  "name": "AIDLC Dashboard",
+  "description": "Dashboard improvements \u2014 built using AIDLC on itself",
+  "appDir": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard",
+  "specDir": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/specs",
+  "logsDir": "/Users/A6002823/Code-Private/overboardom/aidlc-dashboard/docs/aidlc/logs",
+  "rootDir": "/Users/A6002823/Code-Private/overboardom",
+  "defaultModel": "claude-sonnet-4-6",
+  "globalConstraints": [
+    "TypeScript strict mode throughout",
+    "Never hardcode file paths \u2014 always use path.resolve()",
+    "Never import unused variables types or modules",
+    "All colors use Tailwind classes \u2014 never hardcoded hex",
+    "Components accept variant props not style props",
+    "API routes use async params pattern for Next.js 15"
+  ],
+  "defaultValidation": {
+    "afterEachSubPrompt": [
+      "npm run typecheck"
+    ],
+    "afterUnit": [
+      "npm run typecheck",
+      "npm run build"
+    ]
+  },
+  "projectContext": "AIDLC Dashboard is a locally running Next.js 15 web application for managing \nAI-Driven Development Lifecycle projects. It runs at localhost:7777 and provides \nproject management, spec editing, spec execution with live streaming output, \nexecution history, undo, and config editing.\n\nStack: Next.js 15, React 19, TypeScript (strict), Tailwind CSS, Zustand for state,\nServer-Sent Events for streaming, filesystem-based storage (no database).\n\nArchitecture: All project data stored as JSON in data/projects/. Specs read/written \ndirectly from project specDir on disk. Execution logs written to project logsDir.\nAPI routes in src/app/api/. Components in src/components/. \nRuns at localhost:7777 via npm run dev.",
+  "git": {
+    "autoCommit": true,
+    "autoTag": true,
+    "commitMessage": "{unitId} complete: {unitTitle}",
+    "tagTemplate": "{unitId}-{timestamp}"
+  },
+  "createdAt": "2026-03-28T05:02:46.902Z",
+  "updatedAt": "2026-03-29T18:50:08.187982Z"
+}

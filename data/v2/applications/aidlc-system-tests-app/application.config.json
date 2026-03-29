@@ -1,0 +1,34 @@
+{
+  "id": "aidlc-system-tests-app",
+  "name": "AIDLC System Tests",
+  "description": "System validation specs for AIDLC runner capabilities. Safe to run repeatedly.",
+  "appDir": "/Users/A6002823/Code-Private/overboardom/aidlc-system-tests",
+  "specDir": "/Users/A6002823/Code-Private/overboardom/aidlc-system-tests/docs/aidlc/specs",
+  "logsDir": "/Users/A6002823/Code-Private/overboardom/aidlc-system-tests/logs",
+  "rootDir": "/Users/A6002823/Code-Private/overboardom",
+  "defaultModel": "claude-sonnet-4-6",
+  "globalConstraints": [
+    "All test artifacts must go in test/scratch/ only",
+    "Never write files outside test/scratch/",
+    "The final SP must always clean up test/scratch/",
+    "TypeScript strict mode for any .ts files written",
+    "Never import unused variables or modules"
+  ],
+  "defaultValidation": {
+    "afterEachSubPrompt": [
+      "npm run typecheck"
+    ],
+    "afterUnit": [
+      "npm run typecheck"
+    ]
+  },
+  "projectContext": "This is a dedicated test project for validating AIDLC runner capabilities.\n\nPurpose:\n- TEST-01: Validates file writing, validation gating, resume-from-failure, and cleanup\n- TEST-02+: Additional capability tests (reporting, linting, etc.)\n\nAll test artifacts go in test/scratch/ and are deleted by the final SP.\nThis project never touches production code. Safe to run repeatedly.",
+  "git": {
+    "autoCommit": false,
+    "autoTag": false,
+    "commitMessage": "{unitId} complete: {unitTitle}",
+    "tagTemplate": "{unitId}-{timestamp}"
+  },
+  "createdAt": "2026-03-28T22:56:50.700Z",
+  "updatedAt": "2026-03-29T18:50:08.187982Z"
+}

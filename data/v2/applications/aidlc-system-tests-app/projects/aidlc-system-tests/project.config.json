@@ -1,0 +1,14 @@
+{
+  "id": "aidlc-system-tests",
+  "applicationId": "aidlc-system-tests-app",
+  "name": "AIDLC System Tests",
+  "description": "System validation specs for AIDLC runner capabilities. Safe to run repeatedly.",
+  "specDirFilter": null,
+  "model": null,
+  "projectContext": null,
+  "constraints": [],
+  "validation": null,
+  "git": null,
+  "createdAt": "2026-03-28T22:56:50.700Z",
+  "updatedAt": "2026-03-29T18:50:08.187982Z"
+}
