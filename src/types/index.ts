@@ -105,6 +105,7 @@ export interface StreamEvent {
   inputTokens?:  number
   outputTokens?:      number
   logId?:             string
+  durationMs?:        number
   filesWritten?:      string[]
   validationResults?: { command: string; status: string; output: string; errorCount?: number }[]
 }

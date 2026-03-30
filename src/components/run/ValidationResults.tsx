@@ -23,7 +23,7 @@ function StatusIcon({ status }: { status: ValidationResult["status"] }) {
     );
   }
   return (
-    <span className="text-zinc-500 font-bold select-none" aria-label="skipped">
+    <span className="text-gray-400 font-bold select-none" aria-label="skipped">
       —
     </span>
   );
@@ -37,9 +37,9 @@ function ValidationRow({ result, isExpanded, onToggle }: {
   const canExpand = result.status === "failed" && result.output.trim().length > 0;
 
   const rowBg = result.status === "passed"
-    ? "hover:bg-zinc-800"
+    ? "hover:bg-gray-50"
     : result.status === "failed"
-    ? "hover:bg-zinc-800"
+    ? "hover:bg-gray-50"
     : "opacity-60 cursor-default";
 
   const summaryText = result.status === "passed"
@@ -53,12 +53,12 @@ function ValidationRow({ result, isExpanded, onToggle }: {
     : "skipped";
 
   return (
-    <div className="border border-zinc-700 rounded mb-1 overflow-hidden">
+    <div className="border border-gray-200 rounded mb-1 overflow-hidden">
       <button
         type="button"
         className={`w-full flex items-center gap-3 px-3 py-2 text-left text-sm font-mono transition-colors ${
           canExpand ? "cursor-pointer " + rowBg : "cursor-default " + rowBg
-        } bg-zinc-900`}
+        } bg-white`}
         onClick={canExpand ? onToggle : undefined}
         aria-expanded={canExpand ? isExpanded : undefined}
         disabled={!canExpand}
@@ -68,10 +68,10 @@ function ValidationRow({ result, isExpanded, onToggle }: {
         <span
           className={`text-xs px-2 py-0.5 rounded ${
             result.status === "passed"
-              ? "bg-green-900 text-green-300"
+              ? "bg-green-100 text-green-700"
               : result.status === "failed"
-              ? "bg-red-900 text-red-300"
-              : "bg-zinc-800 text-zinc-500"
+              ? "bg-red-100 text-red-700"
+              : "bg-gray-100 text-gray-500"
           }`}
         >
           {summaryText}
@@ -89,8 +89,8 @@ function ValidationRow({ result, isExpanded, onToggle }: {
       </button>
 
       {canExpand && isExpanded && (
-        <div className="border-t border-zinc-700 bg-zinc-950 p-3">
-          <pre className="text-xs text-red-300 font-mono whitespace-pre-wrap break-words max-h-64 overflow-y-auto">
+        <div className="border-t border-gray-200 bg-gray-50 p-3">
+          <pre className="text-xs text-red-600 font-mono whitespace-pre-wrap break-words max-h-64 overflow-y-auto">
             {result.output}
           </pre>
         </div>

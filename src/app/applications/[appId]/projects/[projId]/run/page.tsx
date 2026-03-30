@@ -18,12 +18,14 @@ import { AttemptHistory } from "@/components/run/AttemptHistory"
 import AttemptNotes from "@/components/run/AttemptNotes"
 import AttemptComparison from "@/components/run/AttemptComparison"
 import { RegenerateFileButton } from "@/components/run/RegenerateFileButton"
+import { FileContentViewer } from "@/components/run/FileContentViewer"
 import type { SpAttempt } from "@/lib/attempts"
 
 type SpStatus = "pending" | "running" | "passed" | "failed"
 type VR = { command: string; status: string; output: string; errorCount?: number; passed?: boolean }
 type SpData = {
   status: SpStatus; filesWritten: string[]; validation: VR[]
+  durationMs: number | null
   inputTokens: number; outputTokens: number; name?: string; attempts: SpAttempt[]
 }
 type TerminalEntry = { id: string; timestamp: string; message: string; level: LogLevel }
@@ -44,6 +46,7 @@ export default function RunPage() {
   const [startedAt,      setStartedAt]      = useState(new Date().toISOString())
   const [logId,          setLogId]          = useState<string | null>(null)
   const [comparingSp,    setComparingSp]    = useState<string | null>(null)
+  const [viewingFile,    setViewingFile]    = useState<string | null>(null)
   const [done,           setDone]           = useState(false)
   const [running,        setRunning]        = useState(false)
   const [validated,      setValidated]      = useState<"pending"|"validating"|"passed"|"failed">("pending")
@@ -100,11 +103,11 @@ export default function RunPage() {
       const ev: StreamEvent = JSON.parse(e.data)
       pushEntry(ev.message, levelFromStreamEvent(ev))
       if (ev.type === "sp_start" && ev.spId)
-        setSpData(s => ({ ...s, [ev.spId!]: { status: "running", filesWritten: [], validation: [], inputTokens: 0, outputTokens: 0, name: ev.spName, attempts: [] }}))
+        setSpData(s => ({ ...s, [ev.spId!]: { status: "running", filesWritten: [], validation: [], inputTokens: 0, outputTokens: 0, durationMs: null, name: ev.spName, attempts: [] }}))
       if (ev.type === "sp_pass" && ev.spId)
         setSpData(s => ({ ...s, [ev.spId!]: { ...s[ev.spId!], status: "passed",
           filesWritten: ev.filesWritten ?? [], validation: (ev.validationResults ?? []) as VR[],
-          inputTokens: ev.inputTokens ?? 0, outputTokens: ev.outputTokens ?? 0, name: ev.spName }}))
+          inputTokens: ev.inputTokens ?? 0, outputTokens: ev.outputTokens ?? 0, durationMs: ev.durationMs ?? null, name: ev.spName }}))
       if (ev.type === "sp_fail" && ev.spId)
         setSpData(s => ({ ...s, [ev.spId!]: { ...s[ev.spId!], status: "failed",
           filesWritten: ev.filesWritten ?? [], validation: (ev.validationResults ?? []) as VR[] }}))
@@ -190,6 +193,7 @@ export default function RunPage() {
                 {sp.name && <span className="text-gray-500 text-xs truncate">{sp.name}</span>}
                 <span className="ml-auto flex items-center gap-3 flex-shrink-0 text-gray-400 text-xs">
                   {sp.filesWritten.length > 0 && <span>{sp.filesWritten.length} file{sp.filesWritten.length!==1?"s":""}</span>}
+                  {sp.durationMs != null && <span>{Math.round(sp.durationMs/1000)}s</span>}
                   {sp.inputTokens > 0 && <span className="font-mono">{(sp.inputTokens+sp.outputTokens).toLocaleString()} tok</span>}
                   <span>{expandedSps.has(spId) ? "▲" : "▼"}</span>
                 </span>
@@ -197,15 +201,28 @@ export default function RunPage() {
               {expandedSps.has(spId) && (
                 <div className="border-t border-gray-200 bg-gray-50 p-3 space-y-3">
                   {sp.filesWritten.length > 0 && (
-                    <div className="space-y-1">
-                      <FilesList files={sp.filesWritten} projectId={projId} />
-                      {done && (
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {sp.filesWritten.map(f => (
-                            <RegenerateFileButton key={f} projectId={projId} specFile={specFile} spId={spId} filePath={f} />
-                          ))}
-                        </div>
-                      )}
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Files Written ({sp.filesWritten.length})</p>
+                      <div className="border border-gray-200 rounded overflow-hidden">
+                        {sp.filesWritten.map((filePath, fileIdx) => {
+                          const segs = filePath.replace(/\\/g, "/").split("/")
+                          const fileName = segs[segs.length - 1] ?? filePath
+                          const dirPath = segs.slice(0, -1).join("/")
+                          return (
+                            <div key={filePath} className={"flex items-center justify-between gap-2 px-3 py-2 bg-white hover:bg-gray-50 " + (fileIdx < sp.filesWritten.length - 1 ? "border-b border-gray-100" : "")}>
+                              <button type="button" onClick={() => setViewingFile(filePath)}
+                                className="flex items-center gap-2 min-w-0 text-left flex-1 hover:opacity-70 transition-opacity">
+                                <span className="text-blue-500 shrink-0">ð</span>
+                                <span className="min-w-0">
+                                  <span className="text-gray-800 font-mono text-xs block truncate">{fileName}</span>
+                                  {dirPath && <span className="text-gray-400 font-mono text-xs block truncate">{dirPath}</span>}
+                                </span>
+                              </button>
+                              <RegenerateFileButton projectId={projId} specFile={specFile} spId={spId} filePath={filePath} />
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   )}
                   {sp.validation.length > 0 && <ValidationResults validation={sp.validation as Parameters<typeof ValidationResults>[0]["validation"]} />}
@@ -276,6 +293,19 @@ export default function RunPage() {
           {running && <p className="log-info animate-pulse">Running...</p>}
         </div>
       </div>
+      {viewingFile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          onClick={() => setViewingFile(null)}>
+          <div className="bg-white border border-gray-200 rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[80vh] flex flex-col"
+            onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+              <span className="font-mono text-sm text-gray-800 truncate">{viewingFile}</span>
+              <button onClick={() => setViewingFile(null)} className="text-gray-400 hover:text-gray-600 ml-4">✕</button>
+            </div>
+            <FileContentViewer projectId={projId} filePath={viewingFile} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

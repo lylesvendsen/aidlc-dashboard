@@ -119,13 +119,13 @@ export default function ConstraintToggles({
   };
 
   return (
-    <div className="border border-zinc-700 rounded-lg overflow-hidden">
+    <div className="border border-gray-200 rounded-lg overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-zinc-800 hover:bg-zinc-750 transition-colors text-left"
+        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
       >
-        <span className="flex items-center gap-2 text-sm font-medium text-zinc-200">
+        <span className="flex items-center gap-2 text-sm font-medium text-gray-900">
           {expanded ? (
             <ChevronDown className="w-4 h-4 text-zinc-400" />
           ) : (
@@ -142,11 +142,11 @@ export default function ConstraintToggles({
       </button>
 
       {expanded && (
-        <div className="bg-zinc-900 divide-y divide-zinc-800">
+        <div className="bg-white divide-y divide-gray-100">
           {anyDisabled && (
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-950 border-b border-amber-800">
+            <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-50 border-b border-amber-200">
               <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-              <span className="text-xs text-amber-300">
+              <span className="text-xs text-amber-700">
                 Some constraints are disabled for this run
               </span>
             </div>
@@ -154,7 +154,7 @@ export default function ConstraintToggles({
 
           {constraints.length > 0 && (
             <div className="px-4 py-3">
-              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-3">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
                 Project Constraints
               </p>
               <ul className="space-y-2">
@@ -182,7 +182,7 @@ export default function ConstraintToggles({
                       <span
                         title={constraint}
                         className={`text-sm leading-snug ${
-                          enabled ? 'text-zinc-200' : 'text-zinc-500 line-through'
+                          enabled ? 'text-gray-900' : 'text-gray-400 line-through'
                         }`}
                       >
                         {truncate(constraint, 60)}
@@ -195,7 +195,7 @@ export default function ConstraintToggles({
           )}
 
           <div className="px-4 py-3">
-            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-3">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
               Validation Commands
             </p>
             <ul className="space-y-2">
@@ -222,7 +222,7 @@ export default function ConstraintToggles({
                     </button>
                     <span
                       className={`text-sm ${
-                        enabled ? 'text-zinc-200' : 'text-zinc-500 line-through'
+                        enabled ? 'text-gray-900' : 'text-gray-400 line-through'
                       }`}
                     >
                       {toggle.label}

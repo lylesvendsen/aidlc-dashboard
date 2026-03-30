@@ -78,7 +78,7 @@ function FileModal({ filePath, projectId, onClose }: FileModalProps) {
         className="bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl w-full max-w-3xl mx-4 flex flex-col max-h-[80vh]"
       >
         {/* Modal header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-700">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
           <div className="flex flex-col">
             <span className="text-sm font-mono text-zinc-200 truncate max-w-xl">
               {filePath}
@@ -138,7 +138,7 @@ export function FilesList({ files, projectId }: FilesListProps) {
 
   if (!files || files.length === 0) {
     return (
-      <div className="text-zinc-500 text-sm italic px-1">
+      <div className="text-gray-400 text-sm italic px-1">
         No files written by this sub-prompt.
       </div>
     );
@@ -146,10 +146,10 @@ export function FilesList({ files, projectId }: FilesListProps) {
 
   return (
     <div className="flex flex-col gap-0.5">
-      <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">
+      <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">
         Files Written ({files.length})
       </p>
-      <div className="border border-zinc-700 rounded overflow-hidden">
+      <div className="border border-gray-200 rounded overflow-hidden">
         {files.map((filePath, index) => {
           const segments = filePath.replace(/\\/g, "/").split("/");
           const fileName = segments[segments.length - 1] ?? filePath;
@@ -160,24 +160,24 @@ export function FilesList({ files, projectId }: FilesListProps) {
               key={`${filePath}-${index}`}
               type="button"
               onClick={() => setOpenFile(filePath)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-left text-sm hover:bg-zinc-800 transition-colors bg-zinc-900 ${
-                index < files.length - 1 ? "border-b border-zinc-700" : ""
+              className={`w-full flex items-center gap-3 px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors bg-white ${
+                index < files.length - 1 ? "border-b border-gray-200" : ""
               }`}
             >
-              <span className="text-blue-400 flex-shrink-0 select-none" aria-hidden>
+              <span className="text-blue-500 flex-shrink-0 select-none" aria-hidden>
                 📄
               </span>
               <span className="flex-1 min-w-0">
-                <span className="text-zinc-200 font-mono text-xs truncate block">
+                <span className="text-gray-800 font-mono text-xs truncate block">
                   {fileName}
                 </span>
                 {dirPath && (
-                  <span className="text-zinc-500 font-mono text-xs truncate block">
+                  <span className="text-gray-400 font-mono text-xs truncate block">
                     {dirPath}
                   </span>
                 )}
               </span>
-              <span className="text-zinc-500 text-xs flex-shrink-0 hover:text-blue-400 transition-colors">
+              <span className="text-blue-500 text-xs flex-shrink-0 font-medium hover:text-blue-700 transition-colors">
                 View
               </span>
             </button>

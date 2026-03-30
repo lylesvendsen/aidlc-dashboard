@@ -151,6 +151,7 @@ export async function* runSpec(
       spName:            spResult.name,
       inputTokens:       spResult.tokens.input,
       outputTokens:      spResult.tokens.output,
+      durationMs:        spResult.durationMs,
       filesWritten:      spResult.filesWritten,
       validationResults: spResult.validation,
     })
