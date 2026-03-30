@@ -1,55 +1,31 @@
-import { NextResponse } from "next/server"
-import fs   from "fs"
-import path from "path"
+import { NextRequest, NextResponse } from "next/server"
+import * as fs   from "fs"
+import * as path from "path"
 
-const STANDARD_SPEC_DIR = "docs/aidlc/specs"
-const STANDARD_LOGS_DIR = "docs/aidlc/logs"
-const STANDARD_CONFIG   = "docs/aidlc/aidlc.config.ts"
+const BASE_DIR = path.resolve(process.cwd(), "..")
 
-export async function POST(req: Request) {
-  const { appDir } = await req.json()
+function resolvePath(p: string): string {
+  if (!p) return p
+  if (path.isAbsolute(p)) return p
+  return path.resolve(BASE_DIR, p.startsWith("./") ? p.slice(2) : p)
+}
 
-  if (!appDir || !appDir.trim()) {
-    return NextResponse.json({ error: "appDir is required" }, { status: 400 })
+export async function GET(req: NextRequest) {
+  const p = req.nextUrl.searchParams.get("path")
+  if (!p) return NextResponse.json({ error: "path required" }, { status: 400 })
+  const resolved = resolvePath(p)
+  return NextResponse.json({ exists: fs.existsSync(resolved), path: resolved })
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json()
+  const p = body.path
+  if (!p) return NextResponse.json({ error: "path required" }, { status: 400 })
+  const resolved = resolvePath(p)
+  try {
+    fs.mkdirSync(resolved, { recursive: true })
+    return NextResponse.json({ created: true, path: resolved })
+  } catch (err) {
+    return NextResponse.json({ error: err instanceof Error ? err.message : "Failed" }, { status: 500 })
   }
-
-  const resolvedDir = path.resolve(appDir.trim())
-
-  if (!fs.existsSync(resolvedDir)) {
-    return NextResponse.json({
-      exists:       false,
-      hasStructure: false,
-      specDir:      null,
-      logsDir:      null,
-      message:      "Directory does not exist: " + resolvedDir,
-    })
-  }
-
-  const specPath = path.join(resolvedDir, STANDARD_SPEC_DIR)
-  const logsPath = path.join(resolvedDir, STANDARD_LOGS_DIR)
-  const configPath = path.join(resolvedDir, STANDARD_CONFIG)
-
-  const hasSpecDir   = fs.existsSync(specPath)
-  const hasLogsDir   = fs.existsSync(logsPath)
-  const hasConfig    = fs.existsSync(configPath)
-  const hasStructure = hasSpecDir && hasLogsDir
-
-  let specCount = 0
-  if (hasSpecDir) {
-    specCount = fs.readdirSync(specPath).filter(f => f.endsWith(".md")).length
-  }
-
-  return NextResponse.json({
-    exists:          true,
-    hasStructure,
-    hasSpecDir,
-    hasLogsDir,
-    hasConfig,
-    specDir:         hasSpecDir ? specPath : path.join(resolvedDir, STANDARD_SPEC_DIR),
-    logsDir:         hasLogsDir ? logsPath : path.join(resolvedDir, STANDARD_LOGS_DIR),
-    specCount,
-    standardSpecDir: STANDARD_SPEC_DIR,
-    standardLogsDir: STANDARD_LOGS_DIR,
-    resolvedDir,
-  })
 }

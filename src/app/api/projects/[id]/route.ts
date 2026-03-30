@@ -32,3 +32,18 @@ export async function DELETE(
   deleteProject(id)
   return NextResponse.json({ ok: true })
 }
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+  const { path: filePath, content } = await req.json() as { path: string; content: string }
+  const project = getProject(id)
+  if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 })
+  const fs = await import("fs/promises")
+  const pathMod = await import("path")
+  const abs = pathMod.default.isAbsolute(filePath) ? filePath : pathMod.default.resolve(project.appDir, filePath)
+  await fs.writeFile(abs, content, "utf-8")
+  return NextResponse.json({ ok: true })
+}

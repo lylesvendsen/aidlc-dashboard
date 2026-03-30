@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="/" className="text-base font-semibold text-brand-600 hover:text-brand-700">
             AIDLC
           </a>
-          <a href="/projects" className="text-sm text-gray-600 hover:text-gray-900">Projects</a>
+          <a href="/applications" className="text-sm text-gray-600 hover:text-gray-900">Applications</a>
         </nav>
         <main className="max-w-6xl mx-auto px-6 py-8">{children}</main>
       </body>

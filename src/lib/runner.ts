@@ -155,7 +155,7 @@ export async function* runSpec(
   log.status     = "passed"
   log.durationMs = Date.now() - startTime
   if (!dryRun) saveLog(logsDir, log)
-  yield* emit(log, { type: "done", message: spec.id + " complete in " + Math.round(log.durationMs / 1000) + "s" })
+  yield* emit(log, { type: "done", message: spec.id + " complete in " + Math.round(log.durationMs / 1000) + "s", logId: log.id })
 }
 
 async function* executeSubPrompt(

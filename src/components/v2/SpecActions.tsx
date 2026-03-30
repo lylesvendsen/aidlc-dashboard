@@ -12,7 +12,7 @@ export function SpecActions({ appId, projId, specId, specFile }: {
 
   async function handleDelete() {
     setDeleting(true)
-    await fetch(`/api/v2/specs/${specId}?appId=${appId}&projId=${projId}`, { method: "DELETE" })
+    await fetch(`/api/app-specs/${specId}?appId=${appId}&projId=${projId}`, { method: "DELETE" })
     router.refresh()
   }
 
@@ -31,9 +31,9 @@ export function SpecActions({ appId, projId, specId, specFile }: {
 
   return (
     <div className="flex items-center gap-2 shrink-0">
-      <Link href={`/v2/applications/${appId}/projects/${projId}/specs/${specId}`}
+      <Link href={`/applications/${appId}/projects/${projId}/specs/${specId}`}
         className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-50 active:scale-95 transition-all">Edit</Link>
-      <Link href={`/v2/applications/${appId}/projects/${projId}/run?specFile=${encodeURIComponent(specFile)}`}
+      <Link href={`/applications/${appId}/projects/${projId}/run?specFile=${encodeURIComponent(specFile)}`}
         className="px-3 py-1.5 text-sm font-medium rounded-lg bg-brand-500 text-white hover:bg-brand-600 active:scale-95 transition-all">Run</Link>
       <button onClick={() => setConfirming(true)}
         className="px-3 py-1.5 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 active:scale-95 transition-all">Delete
