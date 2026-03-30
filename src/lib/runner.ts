@@ -130,9 +130,11 @@ export async function* runSpec(
 
     if (spResult.status === "failed") {
       yield* emit(log, {
-        type: "sp_fail",
-        message: sp.id + " failed: " + (spResult.error ?? ""),
-        spId: sp.id,
+        type:              "sp_fail",
+        message:           sp.id + " failed: " + (spResult.error ?? ""),
+        spId:              sp.id,
+        filesWritten:      spResult.filesWritten,
+        validationResults: spResult.validation,
       })
       log.status     = "failed"
       log.durationMs = Date.now() - startTime
@@ -143,12 +145,14 @@ export async function* runSpec(
     }
 
     yield* emit(log, {
-      type: "sp_pass",
-      message: sp.id + " passed (" + Math.round(spResult.durationMs / 1000) + "s)",
-      spId:         sp.id,
-      spName:       spResult.name,
-      inputTokens:  spResult.tokens.input,
-      outputTokens: spResult.tokens.output,
+      type:              "sp_pass",
+      message:           sp.id + " passed (" + Math.round(spResult.durationMs / 1000) + "s)",
+      spId:              sp.id,
+      spName:            spResult.name,
+      inputTokens:       spResult.tokens.input,
+      outputTokens:      spResult.tokens.output,
+      filesWritten:      spResult.filesWritten,
+      validationResults: spResult.validation,
     })
   }
 
