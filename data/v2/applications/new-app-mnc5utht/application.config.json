@@ -1,0 +1,21 @@
+{
+  "id": "new-app-mnc5utht",
+  "name": "New App",
+  "description": "New App",
+  "appDir": "./new-app",
+  "specDir": "./new-app/docs/aidlc/specs",
+  "logsDir": "./new-app/docs/aidlc/logs",
+  "rootDir": ".",
+  "defaultModel": "claude-sonnet-4-6",
+  "globalConstraints": [
+    "TypeScript strict mode throughout",
+    "Never hardcode file paths — always use path.resolve()",
+    "Never import unused variables types or modules",
+    "All colors use Tailwind classes — never hardcoded hex",
+    "Components accept variant props not style props",
+    "API routes use async params pattern for Next.js 15"
+  ],
+  "projectContext": "New App is a locally running Next.js 15 web application for managing \nAI-Driven Development Lifecycle projects. It runs at localhost:7777 and provides \nproject management, spec editing, spec execution with live streaming output, \nexecution history, undo, and config editing.\n\nStack: Next.js 15, React 19, TypeScript (strict), Tailwind CSS, Zustand for state,\nServer-Sent Events for streaming, filesystem-based storage (no database).\n\nArchitecture: All project data stored as JSON in data/projects/. Specs read/written \ndirectly from project specDir on disk. Execution logs written to project logsDir.\nAPI routes in src/app/api/. Components in src/components/. \nRuns at localhost:7777 via npm run dev.",
+  "createdAt": "2026-03-29T19:37:13.937Z",
+  "updatedAt": "2026-03-29T19:37:13.937Z"
+}

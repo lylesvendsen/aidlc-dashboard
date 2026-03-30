@@ -1,5 +1,2 @@
-'use client'
 import { redirect } from "next/navigation"
-export default function V2Root() {
-  redirect("/v2/applications")
-}
+export default function V2Root() { redirect("/v2/applications") }

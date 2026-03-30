@@ -1,0 +1,29 @@
+{
+  "id": "project-1-mnc69oum",
+  "applicationId": "new-app-mnc5utht",
+  "name": "Project 1",
+  "description": "Project Desc",
+  "projectContext": "Project is A11Y Compatibles",
+  "constraints": [
+    "Some constraints"
+  ],
+  "validation": {
+    "afterEachSubPrompt": [
+      "npm run typecheck"
+    ],
+    "afterUnit": [
+      "npm run typecheck",
+      "npm run build"
+    ]
+  },
+  "git": {
+    "autoCommit": false,
+    "autoTag": false,
+    "commitMessage": null,
+    "branch": null
+  },
+  "createdAt": "2026-03-29T19:48:47.758Z",
+  "updatedAt": "2026-03-29T19:51:12.531Z",
+  "specDirFilter": null,
+  "model": null
+}

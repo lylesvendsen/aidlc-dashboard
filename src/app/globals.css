@@ -13,4 +13,10 @@
   .badge-fail    { @apply rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800; }
   .badge-run     { @apply rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800; }
   .badge-none    { @apply rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600; }
+
+  /* Run terminal log levels (dark terminal background) */
+  .log-error   { @apply text-red-600; }
+  .log-success { @apply text-blue-600; }
+  .log-info    { @apply text-gray-300; }
+  .log-system  { @apply text-yellow-500; }
 }

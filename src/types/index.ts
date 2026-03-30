@@ -67,6 +67,15 @@ export interface SubPromptResult {
   error?:       string
 }
 
+export type LogLevel = "error" | "success" | "info" | "system"
+
+/** Persisted stream line (additive field on execution log JSON). */
+export interface ExecutionLogLine {
+  timestamp: string
+  message:   string
+  level?:    LogLevel
+}
+
 export interface ExecutionLog {
   id:              string
   projectId:       string
@@ -82,11 +91,17 @@ export interface ExecutionLog {
   git?:            { commit: string; tag: string; message: string }
   gitStateBeforeRun?: string
   error?:          string
+  /** Full terminal stream with levels; display filters do not affect this. */
+  logLines?:       ExecutionLogLine[]
 }
 
 export interface StreamEvent {
   type:    "log" | "sp_start" | "sp_pass" | "sp_fail" | "done" | "error"
   message: string
+  /** Only meaningful when type === "log"; omitted means info on the client. */
+  level?:  LogLevel
   spId?:   string
-  spName?: string
+  spName?:      string
+  inputTokens?:  number
+  outputTokens?: number
 }

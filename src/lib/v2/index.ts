@@ -1,3 +1,4 @@
+import "server-only"
 import * as fs   from "fs"
 import * as path from "path"
 import type { ApplicationConfig, ProjectConfig, SpecConfig } from "./types"
@@ -97,7 +98,9 @@ export function findProject(projId: string): { app: ApplicationConfig; proj: Pro
 
 /** Get specDir for a project — applies specDirFilter if set */
 export function getSpecDir(app: ApplicationConfig, proj: ProjectConfig): string {
-  const base = app.specDir
+  const base = path.isAbsolute(app.specDir)
+    ? app.specDir
+    : path.resolve(path.dirname(process.cwd()), app.specDir.replace(/^\.\//,""))
   if (!proj.specDirFilter) return base
   return path.join(base, proj.specDirFilter)
 }

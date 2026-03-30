@@ -24,7 +24,7 @@ type TerminalEntry = {
 }
 
 export default function RunPage() {
-  const { id }       = useParams<{ id: string }>()
+  const { appId, projId } = useParams<{ appId: string; projId: string }>()
   const searchParams = useSearchParams()
   const router       = useRouter()
   const specFile     = searchParams.get("specFile") ?? ""
@@ -86,7 +86,7 @@ export default function RunPage() {
 
     const url =
       "/api/stream?projectId=" +
-      id +
+      projId +
       "&specFile=" +
       encodeURIComponent(specFile) +
       "&dryRun=true"
@@ -120,7 +120,7 @@ export default function RunPage() {
 
     const url =
       "/api/stream?projectId=" +
-      id +
+      projId +
       "&specFile=" +
       encodeURIComponent(specFile) +
       (fromSpId ? "&fromSpId=" + fromSpId : "") +
@@ -161,7 +161,7 @@ export default function RunPage() {
     setDone(false)
     router.push(
       "/projects/" +
-        id +
+        projId +
         "/run" +
         "?specFile=" +
         encodeURIComponent(specFile) +
@@ -206,7 +206,7 @@ export default function RunPage() {
             <p className="text-xs text-amber-600 mt-0.5">Resuming from {fromSpId}</p>
           )}
         </div>
-        <a href={"/projects/" + id} className="btn-ghost text-sm shrink-0">
+        <a href={`/v2/applications/${appId}/projects/${projId}`} className="btn-ghost text-sm shrink-0">
           Back
         </a>
       </div>
