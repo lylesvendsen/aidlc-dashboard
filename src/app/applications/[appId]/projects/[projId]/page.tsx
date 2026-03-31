@@ -5,6 +5,7 @@ import * as fs from "fs"
 import * as path from "path"
 import { getApplication, getProject, listSpecConfigs, getSpecDir } from "@/lib/v2"
 import { notFound } from "next/navigation"
+import { resolveBranch } from "@/lib/branch"
 
 const STATUS_COLORS: Record<string, string> = {
   "draft":            "bg-gray-100 text-gray-600",
@@ -32,6 +33,8 @@ export default async function ProjectDetailPage(
     ? fs.readdirSync(specDir).filter((f: string) => f.endsWith(".md")).sort()
     : []
 
+  const branchTemplate = (proj as unknown as { branchTemplate?: string }).branchTemplate
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
       <nav className="text-sm text-gray-500">
@@ -47,7 +50,10 @@ export default async function ProjectDetailPage(
           <h1 className="text-2xl font-semibold text-gray-900">{proj.name}</h1>
           {proj.description && <p className="text-sm text-gray-500 mt-1">{proj.description}</p>}
         </div>
-        <div className="flex items-center gap-2"><GitBranchIndicator projectId={projId} /><Link href={`/applications/${appId}/projects/${projId}/edit`} className="btn-secondary text-sm">Edit</Link></div>
+        <div className="flex items-center gap-2">
+          <GitBranchIndicator projectId={projId} />
+          <Link href={`/applications/${appId}/projects/${projId}/edit`} className="btn-secondary text-sm">Edit</Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -83,6 +89,19 @@ export default async function ProjectDetailPage(
             const config   = configById[specId]
             const status   = config?.status ?? "draft"
             const specFile = path.join(specDir, filename)
+
+            const resolvedBranch = resolveBranch(
+              specId,
+              projId,
+              config?.jiraTicketId,
+              config?.branch,
+              branchTemplate
+            )
+
+            const runHref = resolvedBranch
+              ? `/applications/${appId}/projects/${projId}/run?specFile=${encodeURIComponent(specFile)}&branch=${encodeURIComponent(resolvedBranch ?? "")}`
+              : `/applications/${appId}/projects/${projId}/run?specFile=${encodeURIComponent(specFile)}`
+
             return (
               <div key={filename} className="card flex items-center justify-between gap-4">
                 <div className="min-w-0">
@@ -94,6 +113,11 @@ export default async function ProjectDetailPage(
                         className="text-xs font-mono bg-blue-50 text-blue-700 border border-blue-200 rounded px-1.5 py-0.5 hover:bg-blue-100">
                         {config.jiraTicketId}
                       </a>
+                    )}
+                    {resolvedBranch && (
+                      <span className="font-mono text-xs text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
+                        ⎇ {resolvedBranch}
+                      </span>
                     )}
                   </div>
                 </div>

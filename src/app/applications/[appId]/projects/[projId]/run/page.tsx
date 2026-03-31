@@ -37,6 +37,7 @@ export default function RunPage() {
   const router       = useRouter()
   const specFile     = searchParams.get("specFile") ?? ""
   const fromSpId     = searchParams.get("fromSpId") ?? undefined
+  const branchParam  = searchParams.get("branch") ?? undefined
   const specName     = decodeURIComponent(specFile).split("/").pop() ?? ""
 
   const [project,        setProject]        = useState<Project | null>(null)
@@ -56,6 +57,7 @@ export default function RunPage() {
   const [validError,     setValidError]     = useState("")
   const [expandedSps,    setExpandedSps]    = useState<Set<string>>(new Set())
   const [activeConstraints, setActiveConstraints] = useState<ActiveConstraints | null>(null)
+  const [detectedBranch, setDetectedBranch] = useState<string | null>(branchParam ?? null)
   const logRef      = useRef<HTMLDivElement>(null)
   const autoStarted = useRef(false)
 
@@ -97,6 +99,7 @@ export default function RunPage() {
   const start = (dry: boolean) => {
     setEntries([]); setSpData({}); setDone(false); setRunning(true); setLogId(null)
     setStartedAt(new Date().toISOString())
+    setDetectedBranch(branchParam ?? null)
     const url = "/api/stream?projectId=" + projId +
       "&specFile=" + encodeURIComponent(specFile) +
       (fromSpId ? "&fromSpId=" + fromSpId : "") +
@@ -104,7 +107,19 @@ export default function RunPage() {
     const es = new EventSource(url)
     es.onmessage = (e) => {
       const ev: StreamEvent = JSON.parse(e.data)
-      pushEntry(ev.message, levelFromStreamEvent(ev))
+      const level = levelFromStreamEvent(ev)
+      pushEntry(ev.message, level)
+
+      if (ev.type === "log" && level === "system" && ev.message) {
+        const branchMatch =
+          ev.message.match(/^Branch: switched to (.+)$/) ??
+          ev.message.match(/^Branch: created and switched to (.+)$/) ??
+          ev.message.match(/^Branch: switching to (.+)$/)
+        if (branchMatch && branchMatch[1]) {
+          setDetectedBranch(branchMatch[1].trim())
+        }
+      }
+
       if (ev.type === "sp_start" && ev.spId)
         setSpData(s => ({ ...s, [ev.spId!]: { status: "running", filesWritten: [], validation: [], inputTokens: 0, outputTokens: 0, durationMs: null, name: ev.spName, attempts: [] }}))
       if (ev.type === "sp_pass" && ev.spId)
@@ -131,7 +146,6 @@ export default function RunPage() {
 
   const toggleExpand = (spId: string) => setExpandedSps(prev => { const n = new Set(prev); n.has(spId) ? n.delete(spId) : n.add(spId); return n })
 
-  // Auto-expand failed SPs
   useEffect(() => {
     const failed = Object.entries(spData).filter(([,s]) => s.status === "failed").map(([id]) => id)
     if (failed.length) setExpandedSps(prev => { const n = new Set(prev); failed.forEach(id => n.add(id)); return n })
@@ -153,6 +167,11 @@ export default function RunPage() {
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">Run Spec</h1>
           <p className="text-gray-500 text-sm font-mono mt-1 truncate">{specName}</p>
+          {detectedBranch && (
+            <p className="text-xs text-gray-400 mt-0.5">
+              ⎇ <span className="font-mono">{detectedBranch}</span>
+            </p>
+          )}
           {fromSpId && <p className="text-xs text-amber-600 mt-0.5">Resuming from {fromSpId}</p>}
         </div>
         <a href={`/applications/${appId}/projects/${projId}`} className="btn-ghost text-sm shrink-0">Back</a>
@@ -224,7 +243,7 @@ export default function RunPage() {
                             <div key={filePath} className={"flex items-center justify-between gap-2 px-3 py-2 bg-white hover:bg-gray-50 " + (fileIdx < sp.filesWritten.length - 1 ? "border-b border-gray-100" : "")}>
                               <button type="button" onClick={() => setViewingFile(filePath)}
                                 className="flex items-center gap-2 min-w-0 text-left flex-1 hover:opacity-70 transition-opacity">
-                                <span className="text-blue-500 shrink-0">ð</span>
+                                <span className="text-blue-500 shrink-0">ð</span>
                                 <span className="min-w-0">
                                   <span className="text-gray-800 font-mono text-xs block truncate">{fileName}</span>
                                   {dirPath && <span className="text-gray-400 font-mono text-xs block truncate">{dirPath}</span>}
@@ -313,14 +332,12 @@ export default function RunPage() {
           onApply={async (approved) => {
             const spId = pendingFiles[0]?.spId ?? ""
             setPendingFiles([])
-            // Write approved files
             const res = await fetch("/api/projects/" + projId + "/write-files", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ spId, files: approved.map(f => ({ path: f.path, content: f.newContent })) }),
             })
             const data = await res.json() as { written: string[]; validation: Parameters<typeof ValidationResults>[0]["validation"]; status: string }
-            // Update spData with written files + validation
             setSpData(s => ({ ...s, [spId]: {
               ...s[spId],
               status: data.status as SpStatus,

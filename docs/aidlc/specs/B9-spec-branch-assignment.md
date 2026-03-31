@@ -101,7 +101,7 @@ Acceptance:
   SP02-06  ensureBranch creates branch if it does not exist
   SP02-07  npm run typecheck passes
 
-### SP-03: Runner integration
+### SP-03: Runner integration — MANUALLY IMPLEMENTED (runner.ts too large for single SP)
 Update the runner to resolve and switch branches before SP-01 executes.
 
 Files to modify:
