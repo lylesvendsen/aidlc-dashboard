@@ -35,6 +35,7 @@ export interface ProjectConfig {
   constraints?:    string[]
   validation?:     { afterEachSubPrompt: string[]; afterUnit: string[] }
   git?:            Record<string, unknown>
+  branchTemplate?: string
   createdAt:       string
   updatedAt:       string
 }
@@ -52,6 +53,7 @@ export interface SpecConfig {
   git?:          Record<string, unknown>
   maxTokens?:    number
   reviewNotes?:  string
+  branch?:       string
   createdAt:     string
   updatedAt:     string
 }

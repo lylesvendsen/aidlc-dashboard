@@ -52,10 +52,10 @@ export async function GET(
       );
     }
 
-    // Use the absolute filePath if provided, otherwise resolve relative to specDir
+    // Use the absolute filePath if provided, otherwise resolve relative to appDir first, then specDir
     const absoluteFilePath = path.isAbsolute(filePath)
       ? filePath
-      : resolvedPath;
+      : path.resolve(project.appDir, filePath);
 
     const stat = await fs.stat(absoluteFilePath);
 

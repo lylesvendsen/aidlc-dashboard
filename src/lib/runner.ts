@@ -7,6 +7,7 @@ import type {
   ExecutionLog, StreamEvent, LogLevel,
 } from "@/types"
 import { saveLog } from "./logs"
+import { resolveBranch, ensureBranch } from "./branch"
 import { resolvePath } from "./projects"
 
 const DEFAULT_MAX_TOKENS = 8192
@@ -44,6 +45,7 @@ export async function* runSpec(
   fromSpId?: string,
   onlySpId?: string,
   dryRun = false,
+  reviewMode = false,
 ): AsyncGenerator<StreamEvent> {
   const appDir  = resolvePath(project.appDir)
   const logsDir = resolvePath(project.logsDir)
@@ -110,6 +112,30 @@ export async function* runSpec(
   if (fromSpId) {
     const idx = spec.subPrompts.findIndex((sp) => sp.id === fromSpId)
     if (idx >= 0) toRun = spec.subPrompts.slice(idx)
+  }
+
+  // Branch switching
+  const targetBranch = resolveBranch(
+    spec.id,
+    project.id,
+    undefined,
+    (project as { branchOverride?: string }).branchOverride,
+    (project as { branchTemplate?: string }).branchTemplate,
+  )
+  if (targetBranch && !dryRun) {
+    yield* emit(log, { type: "log", level: "system", message: "Branch: switching to " + targetBranch })
+    const result = await ensureBranch(appDir, targetBranch)
+    if (result.error) {
+      if (result.error.includes("uncommitted") || result.error.includes("local changes")) {
+        yield* emit(log, { type: "log", level: "error", message: "Branch: uncommitted changes — continuing on current branch" })
+      } else {
+        yield* emit(log, { type: "error", message: "Branch switch failed: " + result.error })
+        return
+      }
+    } else {
+      yield* emit(log, { type: "log", level: "system",
+        message: "Branch: " + (result.created ? "created and switched to " : "switched to ") + targetBranch })
+    }
   }
 
   for (const sp of toRun) {

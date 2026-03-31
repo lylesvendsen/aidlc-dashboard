@@ -18,6 +18,7 @@ import { AttemptHistory } from "@/components/run/AttemptHistory"
 import AttemptNotes from "@/components/run/AttemptNotes"
 import AttemptComparison from "@/components/run/AttemptComparison"
 import { RegenerateFileButton } from "@/components/run/RegenerateFileButton"
+import FileApprovalModal from "@/components/run/FileApprovalModal"
 import { FileContentViewer } from "@/components/run/FileContentViewer"
 import type { SpAttempt } from "@/lib/attempts"
 
@@ -47,6 +48,8 @@ export default function RunPage() {
   const [logId,          setLogId]          = useState<string | null>(null)
   const [comparingSp,    setComparingSp]    = useState<string | null>(null)
   const [viewingFile,    setViewingFile]    = useState<string | null>(null)
+  const [reviewMode,     setReviewMode]     = useState(false)
+  const [pendingFiles,   setPendingFiles]   = useState<{ path: string; newContent: string; existingContent: string; spId: string }[]>([])
   const [done,           setDone]           = useState(false)
   const [running,        setRunning]        = useState(false)
   const [validated,      setValidated]      = useState<"pending"|"validating"|"passed"|"failed">("pending")
@@ -97,7 +100,7 @@ export default function RunPage() {
     const url = "/api/stream?projectId=" + projId +
       "&specFile=" + encodeURIComponent(specFile) +
       (fromSpId ? "&fromSpId=" + fromSpId : "") +
-      (dry ? "&dryRun=true" : "")
+      (dry ? "&dryRun=true" : "") + (reviewMode ? "&reviewMode=true" : "")
     const es = new EventSource(url)
     es.onmessage = (e) => {
       const ev: StreamEvent = JSON.parse(e.data)
@@ -111,6 +114,9 @@ export default function RunPage() {
       if (ev.type === "sp_fail" && ev.spId)
         setSpData(s => ({ ...s, [ev.spId!]: { ...s[ev.spId!], status: "failed",
           filesWritten: ev.filesWritten ?? [], validation: (ev.validationResults ?? []) as VR[] }}))
+      if (ev.type === "sp_files_pending" && ev.spId && ev.pendingFiles) {
+        setPendingFiles(ev.pendingFiles.map(f => ({ ...f, spId: ev.spId! })))
+      }
       if (ev.type === "done" || ev.type === "error") { setDone(true); setRunning(false); if (ev.logId) setLogId(ev.logId); es.close() }
     }
     es.onerror = () => { setRunning(false); es.close() }
@@ -158,6 +164,12 @@ export default function RunPage() {
             <button onClick={() => start(false)} disabled={!canRun}
               className={"btn-primary whitespace-nowrap " + (!canRun ? "opacity-40 cursor-not-allowed" : "")}>
               {running ? "Running..." : "Run Spec"}
+            </button>
+            <button
+              onClick={() => setReviewMode(v => !v)}
+              disabled={running}
+              className={"text-xs px-3 py-1.5 rounded border transition-colors " + (reviewMode ? "border-blue-400 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-500 hover:bg-gray-50")}>
+              {reviewMode ? "⏸ Review mode" : "▶ Auto-write"}
             </button>
             {validated==="validating" && <span className="text-xs text-gray-400 animate-pulse">Validating spec...</span>}
             {validated==="passed" && !fromSpId && <span className="text-xs text-green-600">✓ Spec parsed and validated</span>}
@@ -293,6 +305,44 @@ export default function RunPage() {
           {running && <p className="log-info animate-pulse">Running...</p>}
         </div>
       </div>
+      {pendingFiles.length > 0 && (
+        <FileApprovalModal
+          executionId={logId ?? "pending"}
+          spId={pendingFiles[0]?.spId ?? ""}
+          files={pendingFiles}
+          onApply={async (approved) => {
+            const spId = pendingFiles[0]?.spId ?? ""
+            setPendingFiles([])
+            // Write approved files
+            const res = await fetch("/api/projects/" + projId + "/write-files", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ spId, files: approved.map(f => ({ path: f.path, content: f.newContent })) }),
+            })
+            const data = await res.json() as { written: string[]; validation: Parameters<typeof ValidationResults>[0]["validation"]; status: string }
+            // Update spData with written files + validation
+            setSpData(s => ({ ...s, [spId]: {
+              ...s[spId],
+              status: data.status as SpStatus,
+              filesWritten: data.written,
+              validation: data.validation as VR[],
+            }}))
+            if (data.status === "passed") {
+              pushEntry(spId + " approved and passed", "success")
+            } else {
+              pushEntry(spId + " approved but validation failed", "error")
+            }
+          }}
+          onCancel={() => {
+            const spId = pendingFiles[0]?.spId ?? ""
+            setPendingFiles([])
+            setSpData(s => ({ ...s, [spId]: { ...s[spId], status: "failed" }}))
+            pushEntry(spId + " — files rejected by user", "error")
+            setDone(true)
+            setRunning(false)
+          }}
+        />
+      )}
       {viewingFile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
           onClick={() => setViewingFile(null)}>

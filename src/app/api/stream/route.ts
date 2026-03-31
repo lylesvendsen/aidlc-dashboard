@@ -8,7 +8,8 @@ export async function GET(req: Request) {
   const specFile  = searchParams.get("specFile")
   const fromSpId  = searchParams.get("fromSpId") ?? undefined
   const onlySpId  = searchParams.get("onlySpId") ?? undefined
-  const dryRun    = searchParams.get("dryRun") === "true"
+  const dryRun      = searchParams.get("dryRun") === "true"
+  const reviewMode  = searchParams.get("reviewMode") === "true"
 
   if (!projectId || !specFile) {
     return new Response("projectId and specFile required", { status: 400 })
@@ -23,7 +24,7 @@ export async function GET(req: Request) {
   const stream  = new ReadableStream({
     async start(controller) {
       try {
-        for await (const event of runSpec(project, spec, fromSpId, onlySpId, dryRun)) {
+        for await (const event of runSpec(project, spec, fromSpId, onlySpId, dryRun, reviewMode)) {
           controller.enqueue(encoder.encode("data: " + JSON.stringify(event) + "\n\n"))
         }
       } catch (err) {

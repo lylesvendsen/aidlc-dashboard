@@ -96,7 +96,7 @@ export interface ExecutionLog {
 }
 
 export interface StreamEvent {
-  type:    "log" | "sp_start" | "sp_pass" | "sp_fail" | "done" | "error"
+  type:    "log" | "sp_start" | "sp_pass" | "sp_fail" | "sp_files_pending" | "done" | "error"
   message: string
   /** Only meaningful when type === "log"; omitted means info on the client. */
   level?:  LogLevel
@@ -107,5 +107,6 @@ export interface StreamEvent {
   logId?:             string
   durationMs?:        number
   filesWritten?:      string[]
+  pendingFiles?:      { path: string; newContent: string; existingContent: string }[]
   validationResults?: { command: string; status: string; output: string; errorCount?: number }[]
 }

@@ -1,5 +1,6 @@
 import { SpecActions } from "@/components/v2/SpecActions"
 import Link from "next/link"
+import { GitBranchIndicator } from "@/components/GitBranchIndicator"
 import * as fs from "fs"
 import * as path from "path"
 import { getApplication, getProject, listSpecConfigs, getSpecDir } from "@/lib/v2"
@@ -46,7 +47,7 @@ export default async function ProjectDetailPage(
           <h1 className="text-2xl font-semibold text-gray-900">{proj.name}</h1>
           {proj.description && <p className="text-sm text-gray-500 mt-1">{proj.description}</p>}
         </div>
-        <Link href={`/applications/${appId}/projects/${projId}/edit`} className="btn-secondary text-sm">Edit</Link>
+        <div className="flex items-center gap-2"><GitBranchIndicator projectId={projId} /><Link href={`/applications/${appId}/projects/${projId}/edit`} className="btn-secondary text-sm">Edit</Link></div>
       </div>
 
       <div className="grid grid-cols-3 gap-3">

@@ -5,6 +5,16 @@ import Link from "next/link"
 
 interface Props { isNew?: boolean }
 
+function renderTemplate(template: string, vars: { specId: string; projectId: string; jiraId?: string }): string {
+  if (!template.trim()) return ""
+  let result = template
+    .replace(/\{specId\}/g, vars.specId)
+    .replace(/\{projectId\}/g, vars.projectId)
+    .replace(/\{jiraId\}/g, vars.jiraId ?? "")
+  result = result.toLowerCase().replace(/[^a-z0-9/]+/g, "-").replace(/^-+|-+$/g, "")
+  return result
+}
+
 function ProjectForm({ isNew = false }: Props) {
   const { appId, projId } = useParams<{ appId: string; projId?: string }>()
   const router  = useRouter()
@@ -23,6 +33,8 @@ function ProjectForm({ isNew = false }: Props) {
   const [autoTag,           setAutoTag]         = useState(false)
   const [commitMessage,     setCommitMessage]   = useState("")
   const [branch,            setBranch]          = useState("")
+  const [branchTemplate,    setBranchTemplate]  = useState("")
+  const [firstSpecId,       setFirstSpecId]     = useState("")
 
   useEffect(() => {
     fetch(`/api/applications/${appId}`).then(r => r.json()).then(d => setAppName(d.name ?? ""))
@@ -40,9 +52,23 @@ function ProjectForm({ isNew = false }: Props) {
         setAutoTag(d.git?.autoTag ?? false)
         setCommitMessage(d.git?.commitMessage ?? "")
         setBranch(d.git?.branch ?? "")
+        setBranchTemplate(d.branchTemplate ?? "")
       })
+      fetch(`/api/applications/${appId}/projects/${projId}/specs`).then(r => r.json()).then(d => {
+        if (Array.isArray(d) && d.length > 0) {
+          setFirstSpecId(d[0].id ?? d[0].specId ?? "")
+        }
+      }).catch(() => {})
     }
   }, [appId, projId, isNew])
+
+  const branchPreview = branchTemplate.trim()
+    ? renderTemplate(branchTemplate, {
+        specId: firstSpecId || "b1",
+        projectId: projId || "proj",
+        jiraId: "PROJ-42",
+      })
+    : ""
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); setSaving(true); setError("")
@@ -61,6 +87,7 @@ function ProjectForm({ isNew = false }: Props) {
         commitMessage: commitMessage.trim() || null,
         branch: branch.trim() || null,
       },
+      branchTemplate: branchTemplate.trim() || null,
     }
     try {
       let res: Response
@@ -181,6 +208,40 @@ function ProjectForm({ isNew = false }: Props) {
               Auto-tag on success
             </label>
           </div>
+        </div>
+
+        {/* Branch template */}
+        <div className="card space-y-4">
+          <h2 className="font-medium text-gray-900">Branch template</h2>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Branch template</label>
+            <input
+              className="input-field font-mono text-sm"
+              value={branchTemplate}
+              placeholder="feature/{specId}"
+              onChange={e => setBranchTemplate(e.target.value)}
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Available variables:{" "}
+              <span className="font-mono text-gray-500">{"{specId}"}</span>{" "}
+              <span className="font-mono text-gray-500">{"{projectId}"}</span>{" "}
+              <span className="font-mono text-gray-500">{"{jiraId}"}</span>
+              {" — "}leave blank for no automatic branch switching.
+            </p>
+          </div>
+          {branchTemplate.trim() && (
+            <div className="space-y-1">
+              <p className="text-xs text-gray-500 font-medium">Preview</p>
+              <p className="text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-700">
+                {branchPreview ? branchPreview : <span className="text-gray-400 italic">invalid template</span>}
+              </p>
+              <p className="text-xs text-gray-400">
+                Rendered using specId=<span className="font-mono">{firstSpecId || "b1"}</span>,
+                {" "}projectId=<span className="font-mono">{projId || "proj"}</span>,
+                {" "}jiraId=<span className="font-mono">PROJ-42</span>
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-3">
